@@ -1,6 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function App() {
+interface Song {
+  name: string;
+  dataUrl: string;
+}
+
+export default function App(): JSX.Element {
+  const [songs, setSongs] = useState<Song[]>([]);
+
+  const handleFileUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result as string | undefined;
+      if (!result) return;
+
+      const newSong: Song = {
+        name: file.name,
+        dataUrl: result,
+      };
+      setSongs([...songs, newSong]);
+      console.log(newSong, 'asdsadas');
+      console.log(songs, 'SONGS HERE TESTING');
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <>
       <h1 className='text-center text-3xl font-bold font-mono'>Music Player</h1>
@@ -10,23 +39,9 @@ export default function App() {
           <div className='border border-white'></div>
           <div className='flex flex-col mt-10'>
             <h2>Songs Available</h2>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
-            <p>Demo</p>
+            {songs.map((song, index) => (
+              <p key={index}>{song.name}</p>
+            ))}
           </div>
           <div className='w-full border border-white'></div>
         </div>
@@ -51,7 +66,7 @@ export default function App() {
         </div>
         <div className='border border-blue-900 w-56'>
           <p>PUTTING SONGS HERE</p>
-          <button className='border border-slate-300'>Choose file</button>
+          <input type='file' onChange={handleFileUpload} />
         </div>
       </div>
     </>
