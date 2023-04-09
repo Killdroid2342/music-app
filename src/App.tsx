@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 interface Song {
   name: string;
@@ -7,6 +7,8 @@ interface Song {
 
 export default function App(): JSX.Element {
   const [songs, setSongs] = useState<Song[]>([]);
+  const [currentSong, setCurrentSong] = useState<Song | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const handleFileUpload = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -24,10 +26,38 @@ export default function App(): JSX.Element {
         dataUrl: result,
       };
       setSongs([...songs, newSong]);
-      console.log(newSong, 'asdsadas');
-      console.log(songs, 'SONGS HERE TESTING');
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleSongClick = (song: Song) => {
+    setCurrentSong(song);
+    if (audioRef.current) {
+      audioRef.current.load();
+      audioRef.current.play();
+    }
+  };
+
+  const handlePlayPauseClick = () => {
+    if (audioRef.current) {
+      if (audioRef.current.paused) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  };
+
+  const handleSkipBackwardClick = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime -= 10;
+    }
+  };
+
+  const handleSkipForwardClick = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime += 10;
+    }
   };
 
   return (
@@ -40,31 +70,68 @@ export default function App(): JSX.Element {
           <div className='flex flex-col mt-10'>
             <h2>Songs Available</h2>
             {songs.map((song, index) => (
-              <p key={index}>{song.name}</p>
+              <p key={index} onClick={() => handleSongClick(song)}>
+                {song.name}
+              </p>
             ))}
           </div>
           <div className='w-full border border-white'></div>
         </div>
         <div className='border border-red-900 w-10/12 flex flex-col justify-center items-center'>
-          <p className='mt-4'>Song Name</p>
+          <p className='mt-4'>{currentSong?.name ?? 'Song Name'}</p>
           <div className='border-dashed border border-purple-900 h-3/5 w-3/5 mt-4'>
-            <p>IMG</p>
+            {currentSong?.dataUrl ? (
+              <audio
+                ref={audioRef}
+                controls={false}
+                onEnded={() => setCurrentSong(null)}
+                onError={() => setCurrentSong(null)}
+              >
+                <source src={currentSong.dataUrl} type='audio/mpeg' />
+              </audio>
+            ) : (
+              <p>IMG</p>
+            )}
           </div>
           <div className='border border-white w-full flex flex-row justify-evenly'>
-            <div className='border border-red-900'>Music Up/Down</div>
+            <div className='border border-red-900 p-3 cursor-pointer'>
+              Music level bar
+            </div>
+
             <div className='flex flex-row border border-blue-400'>
-              <p className='border border-blue-900'>{'<'}</p>
-              <p className='border border-blue-900'>{'||'}</p>
-              <p className='border border-blue-900'>{'>'}</p>
+              <p className='border border-blue-900 p-3 cursor-pointer'>
+                {'<<'}
+              </p>
+              <p
+                className='border border-blue-900 p-3 cursor-pointer'
+                onClick={handlePlayPauseClick}
+              >
+                {'||'}
+              </p>
+              <p className='border border-blue-900 p-3 cursor-pointer'>
+                {'>>'}
+              </p>
             </div>
             <div className='flex flex-row border border-green-400'>
-              <p className='border border-green-900'>Back 10</p>
-
-              <p className='border border-green-900'>Forward 10</p>
+              <p
+                className='border border-green-900 p-3 cursor-pointer'
+                onClick={handleSkipBackwardClick}
+              >
+                Back 10
+              </p>
+              <p
+                className='border border-green-900 p-3 cursor-pointer'
+                onClick={handleSkipForwardClick}
+              >
+                Forward 10
+              </p>
             </div>
           </div>
+          <div className='border border-purple-900 w-full text-center mt-20'>
+            Music bar
+          </div>
         </div>
-        <div className='border border-blue-900 w-56'>
+        <div className='border border-blue-900 w-56 flex flex-col'>
           <p>PUTTING SONGS HERE</p>
           <input type='file' onChange={handleFileUpload} />
         </div>
