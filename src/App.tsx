@@ -9,6 +9,7 @@ export default function App(): JSX.Element {
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const handleFileUpload = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -42,8 +43,10 @@ export default function App(): JSX.Element {
     if (audioRef.current) {
       if (audioRef.current.paused) {
         audioRef.current.play();
+        setIsPlaying(true);
       } else {
         audioRef.current.pause();
+        setIsPlaying(false);
       }
     }
   };
@@ -67,10 +70,13 @@ export default function App(): JSX.Element {
         <div className='border border-white'>
           <p>SONGS HERE</p>
           <div className='border border-white'></div>
-          <div className='flex flex-col mt-10'>
-            <h2>Songs Available</h2>
+          <div className='flex flex-col'>
             {songs.map((song, index) => (
-              <p key={index} onClick={() => handleSongClick(song)}>
+              <p
+                key={index}
+                onClick={() => handleSongClick(song)}
+                className='cursor-pointer border border-red-900 text-black bg-white font-bold'
+              >
                 {song.name}
               </p>
             ))}
@@ -95,7 +101,7 @@ export default function App(): JSX.Element {
           </div>
           <div className='border border-white w-full flex flex-row justify-evenly'>
             <div className='border border-red-900 p-3 cursor-pointer'>
-              Music level bar
+              Music Volume
             </div>
 
             <div className='flex flex-row border border-blue-400'>
@@ -106,7 +112,7 @@ export default function App(): JSX.Element {
                 className='border border-blue-900 p-3 cursor-pointer'
                 onClick={handlePlayPauseClick}
               >
-                {'||'}
+                {currentSong ? <>{isPlaying ? '▐▐' : ' ▶ '}</> : 'Song Name'}
               </p>
               <p className='border border-blue-900 p-3 cursor-pointer'>
                 {'>>'}
