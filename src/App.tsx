@@ -30,7 +30,12 @@ export default function App(): JSX.Element {
     };
     reader.readAsDataURL(file);
   };
-
+  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const volume = parseFloat(event.target.value);
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  };
   const handleSongClick = (song: Song) => {
     setCurrentSong(song);
     if (audioRef.current) {
@@ -100,7 +105,14 @@ export default function App(): JSX.Element {
             )}
           </div>
           <div className='border border-white w-full flex flex-row justify-evenly'>
-            <div className='border border-red-900 p-3 cursor-pointer'>
+            <div className='border border-red-900 p-3 cursor-pointer flex flex-col'>
+              <input
+                type='range'
+                min='0'
+                max='1'
+                step='0.01'
+                onChange={handleVolumeChange}
+              />
               Music Volume
             </div>
 
@@ -112,7 +124,7 @@ export default function App(): JSX.Element {
                 className='border border-blue-900 p-3 cursor-pointer'
                 onClick={handlePlayPauseClick}
               >
-                {currentSong ? <>{isPlaying ? '▐▐' : ' ▶ '}</> : 'Song Name'}
+                {'No Songs' ? <>{isPlaying ? '▐▐' : ' ▶ '}</> : 'Song Name'}
               </p>
               <p className='border border-blue-900 p-3 cursor-pointer'>
                 {'>>'}
