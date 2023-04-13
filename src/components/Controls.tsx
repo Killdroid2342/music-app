@@ -44,10 +44,13 @@ const Controls = ({
           >
             Forward 10
           </p>
+          <p
+            className='border border-green-900 p-3 cursor-pointer'
+            onClick={handleSkipForwardClick}
+          >
+            Restart Song
+          </p>
         </div>
-      </div>
-      <div className='border border-purple-900 w-full text-center mt-20'>
-        Progress Bar
       </div>
     </>
   );

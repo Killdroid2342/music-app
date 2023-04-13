@@ -3,7 +3,7 @@ import React from 'react';
 const SavedSongs = ({ handleSongClick, songs }: any) => {
   return (
     <div className='border border-white'>
-      <p>SONGS HERE</p>
+      <p>Uploaded Songs Here</p>
       <div className='border border-white'></div>
       <div className='flex flex-col'>
         {songs.map((song: any, index: any) => (
