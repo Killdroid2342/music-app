@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import SavedSongs from './components/SavedSongs';
-import DisplayedSongs from './components/DisplayedSongs';
 import Controls from './components/Controls';
 import ImportingFiles from './components/ImportingFiles';
 
@@ -79,11 +78,21 @@ export default function App(): JSX.Element {
         <SavedSongs handleSongClick={handleSongClick} songs={songs} />
         <div className='border border-red-900 w-10/12 flex flex-col justify-center items-center'>
           <p className='mt-4'>{currentSong?.name ?? 'Song Name'}</p>
-          <DisplayedSongs
-            setCurrentSong={setCurrentSong}
-            audioRef={audioRef}
-            currentSong={currentSong}
-          />
+
+          <div className='border-dashed border border-purple-900 h-3/5 w-3/5 mt-4'>
+            {currentSong?.dataUrl ? (
+              <audio
+                ref={audioRef}
+                controls={false}
+                onEnded={() => setCurrentSong(null)}
+                onError={() => setCurrentSong(null)}
+              >
+                <source src={currentSong.dataUrl} type='audio/mpeg' />
+              </audio>
+            ) : (
+              <p>IMG</p>
+            )}
+          </div>
           <Controls
             handleVolumeChange={handleVolumeChange}
             handlePlayPauseClick={handlePlayPauseClick}
@@ -92,7 +101,7 @@ export default function App(): JSX.Element {
             handleSkipForwardClick={handleSkipForwardClick}
           />
         </div>
-        <ImportingFiles />
+        <ImportingFiles handleFileUpload={handleFileUpload} />
       </div>
     </>
   );
