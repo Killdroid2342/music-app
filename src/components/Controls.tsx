@@ -1,13 +1,42 @@
 import React from 'react';
 
-const Controls = ({
-  handleVolumeChange,
-  handlePlayPauseClick,
-  isPlaying,
-  handleSkipBackwardClick,
-  handleSkipForwardClick,
-  handleRestartSongClick,
-}: any) => {
+const Controls = ({ isPlaying, audioRef, setIsPlaying }: any) => {
+  const handleRestartSongClick = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+  const handlePlayPauseClick = () => {
+    if (audioRef.current) {
+      if (audioRef.current.paused) {
+        audioRef.current.play();
+        setIsPlaying(true);
+      } else {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
+
+  const handleSkipBackwardClick = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime -= 10;
+    }
+  };
+
+  const handleSkipForwardClick = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime += 10;
+    }
+  };
+  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const volume = parseFloat(event.target.value);
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  };
   return (
     <>
       <div className='border border-white w-full flex flex-row justify-evenly'>
