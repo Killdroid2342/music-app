@@ -2,8 +2,9 @@ import React, { useState, useRef } from 'react';
 import SavedSongs from './components/SavedSongs';
 import Controls from './components/Controls';
 import ImportingFiles from './components/ImportingFiles';
+import ProgressBar from './components/ProgressBar';
 
-interface Song {
+export interface Song {
   name: string;
   dataUrl: string;
 }
@@ -15,31 +16,6 @@ export default function App(): JSX.Element {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState<number>(0);
 
-  const handleFileUpload = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string | undefined;
-      if (!result) return;
-
-      const newSong: Song = {
-        name: file.name,
-        dataUrl: result,
-      };
-      setSongs([...songs, newSong]);
-    };
-    reader.readAsDataURL(file);
-  };
-  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const volume = parseFloat(event.target.value);
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  };
   const handleSongClick = (song: Song) => {
     setCurrentSong(song);
     if (audioRef.current) {
@@ -48,43 +24,6 @@ export default function App(): JSX.Element {
     }
   };
 
-  const handlePlayPauseClick = () => {
-    if (audioRef.current) {
-      if (audioRef.current.paused) {
-        audioRef.current.play();
-        setIsPlaying(true);
-      } else {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      }
-    }
-  };
-
-  const handleSkipBackwardClick = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime -= 10;
-    }
-  };
-
-  const handleSkipForwardClick = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime += 10;
-    }
-  };
-  const handleRestartSongClick = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-  function formatTime(time: number): string {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(seconds).padStart(2, '0');
-    return `${formattedMinutes}:${formattedSeconds}`;
-  }
   return (
     <>
       <h1 className='text-center text-3xl font-bold font-mono'>Music Player</h1>
@@ -92,7 +31,6 @@ export default function App(): JSX.Element {
         <SavedSongs handleSongClick={handleSongClick} songs={songs} />
         <div className='border border-red-900 w-10/12 flex flex-col justify-center items-center'>
           <p className='mt-4 text-2xl'>{currentSong?.name ?? 'Song Name'}</p>
-
           {currentSong?.dataUrl ? (
             <audio
               ref={audioRef}
@@ -111,44 +49,18 @@ export default function App(): JSX.Element {
               <source src={currentSong.dataUrl} type='audio/mpeg' />
             </audio>
           ) : null}
-
           <Controls
-            handleVolumeChange={handleVolumeChange}
-            handlePlayPauseClick={handlePlayPauseClick}
+            audioRef={audioRef}
             isPlaying={isPlaying}
-            handleSkipBackwardClick={handleSkipBackwardClick}
-            handleSkipForwardClick={handleSkipForwardClick}
-            handleRestartSongClick={handleRestartSongClick}
+            setIsPlaying={setIsPlaying}
           />
-          <div
-            className='border border-purple-900 w-full text-center mt-20'
-            style={{
-              backgroundColor: '#FFF', // Set the background color to a shade of red
-              height: '10px', // Set the height of the progress bar
-              width: '100%', // Set the width to 100%
-              position: 'relative', // Set the position to relative
-            }}
-          >
-            <div
-              style={{
-                position: 'absolute', // Set the position to absolute
-                top: 0,
-                bottom: 0,
-                left: 0,
-                backgroundColor: '#8B0000', // Set the background color to a lighter shade of red
-                width: `${progress}%`, // Set the width to the percentage of progress made
-              }}
-            ></div>
-          </div>
-          <p className='text-center'>
-            {currentSong
-              ? `${formatTime(
-                  audioRef.current?.currentTime ?? 0
-                )} / ${formatTime(audioRef.current?.duration ?? 0)}`
-              : '0:00 / 0:00'}
-          </p>
+          <ProgressBar
+            progress={progress}
+            currentSong={currentSong}
+            audioRef={audioRef}
+          />
         </div>
-        <ImportingFiles handleFileUpload={handleFileUpload} />
+        <ImportingFiles songs={songs} setSongs={setSongs} />
       </div>
     </>
   );
