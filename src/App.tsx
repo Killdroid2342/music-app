@@ -71,7 +71,20 @@ export default function App(): JSX.Element {
       audioRef.current.currentTime += 10;
     }
   };
-
+  const handleRestartSongClick = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+  function formatTime(time: number): string {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
   return (
     <>
       <h1 className='text-center text-3xl font-bold font-mono'>Music Player</h1>
@@ -105,6 +118,7 @@ export default function App(): JSX.Element {
             isPlaying={isPlaying}
             handleSkipBackwardClick={handleSkipBackwardClick}
             handleSkipForwardClick={handleSkipForwardClick}
+            handleRestartSongClick={handleRestartSongClick}
           />
           <div
             className='border border-purple-900 w-full text-center mt-20'
@@ -126,6 +140,13 @@ export default function App(): JSX.Element {
               }}
             ></div>
           </div>
+          <p className='text-center'>
+            {currentSong
+              ? `${formatTime(
+                  audioRef.current?.currentTime ?? 0
+                )} / ${formatTime(audioRef.current?.duration ?? 0)}`
+              : '0:00 / 0:00'}
+          </p>
         </div>
         <ImportingFiles handleFileUpload={handleFileUpload} />
       </div>
