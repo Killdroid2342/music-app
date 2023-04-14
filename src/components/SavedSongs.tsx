@@ -16,7 +16,8 @@ const SavedSongs = ({ handleSongClick, songs }: any) => {
           </p>
         ))}
       </div>
-      <div className='w-full border border-white'></div>
+      <div className='w-full border border-green-900 mt-5'></div>
+      <p>Create Playlist</p>
     </div>
   );
 };
