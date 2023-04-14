@@ -6,6 +6,7 @@ const Controls = ({
   isPlaying,
   handleSkipBackwardClick,
   handleSkipForwardClick,
+  handleRestartSongClick,
 }: any) => {
   return (
     <>
@@ -22,14 +23,16 @@ const Controls = ({
         </div>
 
         <div className='flex flex-row border border-blue-400'>
-          <p className='border border-blue-900 p-3 cursor-pointer'>{'<<'}</p>
+          <p className='border border-blue-900 p-3 cursor-pointer'>
+            Previous Song
+          </p>
           <p
             className='border border-blue-900 p-3 cursor-pointer'
             onClick={handlePlayPauseClick}
           >
             {'No Songs' ? <>{isPlaying ? '▐▐' : ' ▶ '}</> : 'Song Name'}
           </p>
-          <p className='border border-blue-900 p-3 cursor-pointer'>{'>>'}</p>
+          <p className='border border-blue-900 p-3 cursor-pointer'>Next Song</p>
         </div>
         <div className='flex flex-row border border-green-400'>
           <p
@@ -46,7 +49,7 @@ const Controls = ({
           </p>
           <p
             className='border border-green-900 p-3 cursor-pointer'
-            onClick={handleSkipForwardClick}
+            onClick={handleRestartSongClick}
           >
             Restart Song
           </p>
