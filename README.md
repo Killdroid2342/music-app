@@ -1,1 +1,1 @@
-This music player allows you to create your own playlists and add ur own songs. Not only this, you will also have the ability to edit how your music sounds.
+In this app, you have the ability to create an account and with that account you can upload songs and play them.
