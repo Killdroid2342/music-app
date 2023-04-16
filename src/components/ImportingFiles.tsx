@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Song } from '../App';
+import { Song } from '../Pages/Pages';
 
-const ImportingFiles = ({ songs, setSongs }: any) => {
+export default function ImportingFiles({ songs, setSongs }: any) {
   const [songName, setSongName] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
@@ -67,6 +67,4 @@ const ImportingFiles = ({ songs, setSongs }: any) => {
       {successMessage && <p className='text-green-500'>{successMessage}</p>}
     </div>
   );
-};
-
-export default ImportingFiles;
+}

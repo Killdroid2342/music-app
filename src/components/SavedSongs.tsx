@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SavedSongs = ({ handleSongClick, songs }: any) => {
+export default function SavedSongs({ handleSongClick, songs }: any) {
   return (
     <div className='border border-white'>
       <p>Uploaded Songs Here</p>
@@ -20,6 +20,4 @@ const SavedSongs = ({ handleSongClick, songs }: any) => {
       <p>Create Playlist</p>
     </div>
   );
-};
-
-export default SavedSongs;
+}

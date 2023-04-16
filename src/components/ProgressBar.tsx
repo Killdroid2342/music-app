@@ -7,7 +7,7 @@ function formatTime(time: number): string {
   const formattedSeconds = String(seconds).padStart(2, '0');
   return `${formattedMinutes}:${formattedSeconds}`;
 }
-const ProgressBar = ({ progress, currentSong, audioRef }: any) => {
+export default function ProgressBar({ progress, currentSong, audioRef }: any) {
   return (
     <>
       <div
@@ -39,6 +39,4 @@ const ProgressBar = ({ progress, currentSong, audioRef }: any) => {
       </p>
     </>
   );
-};
-
-export default ProgressBar;
+}

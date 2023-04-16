@@ -1,6 +1,13 @@
 import React from 'react';
 
-const Controls = ({ isPlaying, audioRef, setIsPlaying }: any) => {
+export default function Controls({
+  isPlaying,
+  audioRef,
+  setIsPlaying,
+  currentSong,
+  setCurrentSong,
+  songs,
+}: any) {
   const handleRestartSongClick = () => {
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
@@ -37,6 +44,30 @@ const Controls = ({ isPlaying, audioRef, setIsPlaying }: any) => {
       audioRef.current.volume = volume;
     }
   };
+  const handlePreviousSongClick = () => {
+    if (currentSong) {
+      const currentIndex = songs.findIndex((song: any) => song === currentSong);
+      const previousIndex = (currentIndex - 1 + songs.length) % songs.length;
+      setCurrentSong(songs[previousIndex]);
+      setIsPlaying(true);
+      if (audioRef.current) {
+        audioRef.current.load();
+        audioRef.current.play();
+      }
+    }
+  };
+  const handleNextSongClick = () => {
+    if (currentSong) {
+      const currentIndex = songs.findIndex((song: any) => song === currentSong);
+      const previousIndex = (currentIndex + 1 + songs.length) % songs.length;
+      setCurrentSong(songs[previousIndex]);
+      setIsPlaying(true);
+      if (audioRef.current) {
+        audioRef.current.load();
+        audioRef.current.play();
+      }
+    }
+  };
   return (
     <>
       <div className='border border-white w-full flex flex-row justify-evenly'>
@@ -52,17 +83,28 @@ const Controls = ({ isPlaying, audioRef, setIsPlaying }: any) => {
         </div>
 
         <div className='flex flex-row border border-blue-400'>
-          <p className='border border-blue-900 p-3 cursor-pointer'>
-            Previous Song
+          <p
+            className='border border-blue-900 p-3 cursor-pointer'
+            onClick={handlePreviousSongClick}
+          >
+            {currentSong && songs.length > 1
+              ? 'Previous Song'
+              : 'No Previous Song'}
           </p>
           <p
             className='border border-blue-900 p-3 cursor-pointer'
             onClick={handlePlayPauseClick}
           >
-            {'No Songs' ? <>{isPlaying ? '▐▐' : ' ▶ '}</> : 'Song Name'}
+            {currentSong ? (isPlaying ? '▐▐' : ' ▶ ') : 'No Songs'}
           </p>
-          <p className='border border-blue-900 p-3 cursor-pointer'>Next Song</p>
+          <p
+            className='border border-blue-900 p-3 cursor-pointer'
+            onClick={handleNextSongClick}
+          >
+            {currentSong && songs.length > 1 ? 'Next Song' : 'No Next Song'}
+          </p>
         </div>
+
         <div className='flex flex-row border border-green-400'>
           <p
             className='border border-green-900 p-3 cursor-pointer'
@@ -86,6 +128,4 @@ const Controls = ({ isPlaying, audioRef, setIsPlaying }: any) => {
       </div>
     </>
   );
-};
-
-export default Controls;
+}
