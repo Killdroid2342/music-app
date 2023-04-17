@@ -3,23 +3,63 @@ import { Link } from 'react-router-dom';
 
 const Login = () => {
   return (
-    <div className='flex items-center justify-center h-screen flex-col'>
-      <form action='' className='flex flex-col border border-red-900 w-40'>
-        <input
-          type='text'
-          className='border border-green-900 text-black'
-          placeholder='Enter Username'
-        />
-        <input
-          type='password'
-          className='border border-blue-900 text-black'
-          placeholder='Enter Password '
-        />
-        <button>Log In</button>
-      </form>
-      <p>Have not got an account? Click the sign up button Below</p>
-      <Link to='/register'>Sign-Up</Link>
-    </div>
+    <>
+      <div className='main'>
+        <input type='checkbox' id='chk' aria-hidden='true' />
+        <div className='login'>
+          <form className='form'>
+            <label htmlFor='chk' aria-hidden='true'>
+              Log in
+            </label>
+            <input
+              className='input'
+              type='email'
+              name='email'
+              placeholder='Email'
+              required
+            />
+            <input
+              className='input'
+              type='password'
+              name='pswd'
+              placeholder='Password'
+              required
+            />
+            <button type='submit'>Log in</button>
+          </form>
+        </div>
+
+        <div className='register'>
+          <form className='form'>
+            <label htmlFor='chk' aria-hidden='true'>
+              Register
+            </label>
+            <input
+              className='input'
+              type='text'
+              name='txt'
+              placeholder='Username'
+              required
+            />
+            <input
+              className='input'
+              type='email'
+              name='email'
+              placeholder='Email'
+              required
+            />
+            <input
+              className='input'
+              type='password'
+              name='pswd'
+              placeholder='Password'
+              required
+            />
+            <button type='submit'>Register</button>
+          </form>
+        </div>
+      </div>
+    </>
   );
 };
 
