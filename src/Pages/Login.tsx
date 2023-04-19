@@ -1,20 +1,37 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
+export default function Login() {
   const [loginData, setLoginData] = useState({
     username: '',
     password: '',
   });
+  const [registerData, setRegisterData] = useState({
+    username: '',
+    password: '',
+  });
 
-  function handleInput(e: any) {
+  function handleLoginSubmit(e: any) {
     e.preventDefault();
     console.log(loginData);
   }
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleLoginInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setLoginData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  }
+
+  function handleRegisterSubmit(e: any) {
+    e.preventDefault();
+    console.log(registerData);
+  }
+
+  function handleRegisterInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setRegisterData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -25,7 +42,7 @@ const Login = () => {
       <div className='main'>
         <input type='checkbox' id='chk' aria-hidden='true' />
         <div className='login'>
-          <form className='form' onSubmit={handleInput}>
+          <form className='form' onSubmit={handleLoginSubmit}>
             <label htmlFor='chk' aria-hidden='true'>
               Log in
             </label>
@@ -34,37 +51,37 @@ const Login = () => {
               type='text'
               name='username'
               placeholder='Username'
-              onChange={handleInputChange}
+              onChange={handleLoginInputChange}
             />
             <input
               className='input'
               type='password'
               name='password'
               placeholder='Password'
-              onChange={handleInputChange}
+              onChange={handleLoginInputChange}
             />
             <button type='submit'>Log in</button>
           </form>
         </div>
 
         <div className='register'>
-          <form className='form'>
+          <form className='form' onSubmit={handleRegisterSubmit}>
             <label htmlFor='chk' aria-hidden='true'>
               Register
             </label>
             <input
               className='input'
               type='text'
-              name='txt'
+              name='username'
               placeholder='Username'
-              required
+              onChange={handleRegisterInputChange}
             />
             <input
               className='input'
               type='password'
-              name='pswd'
+              name='password'
               placeholder='Password'
-              required
+              onChange={handleRegisterInputChange}
             />
             <button type='submit'>Register</button>
           </form>
@@ -72,6 +89,4 @@ const Login = () => {
       </div>
     </>
   );
-};
-
-export default Login;
+}
