@@ -31,10 +31,11 @@ export default function Main(): JSX.Element {
         <p>Account: ADMIN</p>
         <button className='border border-white'>Sign Out</button>
       </div>
-      <div className='flex flex-row h-screen'>
+      <div className='flex flex-row'>
         <SavedSongs handleSongClick={handleSongClick} songs={songs} />
         <div className='border border-red-900 w-10/12 flex flex-col justify-center items-center'>
-          <p className='mt-4 text-2xl'>{currentSong?.name ?? 'Song Name'}</p>
+          <p className='text-2xl mt-4'>{currentSong?.name ?? 'Song Name'}</p>
+          <div className='border border-white h-96 w-96 mt-4'>img</div>
           {currentSong?.dataUrl ? (
             <audio
               ref={audioRef}
