@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
-import Pages from './Pages/Pages';
+import Main from './Pages/Main';
 import Login from './Pages/Login';
 
 const router = createBrowserRouter([
@@ -9,7 +9,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/main',
-    element: <Pages />,
+    element: <Main />,
   },
 ]);
 

@@ -9,7 +9,7 @@ export interface Song {
   dataUrl: string;
 }
 
-export default function Pages(): JSX.Element {
+export default function Main(): JSX.Element {
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);

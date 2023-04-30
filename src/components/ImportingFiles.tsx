@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Song } from '../Pages/Pages';
+import { Song } from '../Pages/Main';
 
 export default function ImportingFiles({ songs, setSongs }: any) {
   const [songName, setSongName] = useState('');
