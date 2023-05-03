@@ -1,14 +1,12 @@
 const express = require('express');
-const mysql = require('mysql2');
 const app = express();
 const port = 3000;
+const bodyParser = require('body-parser');
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'mydatabase',
-});
+const routes = require('./api/index');
+
+routes(app, { urlencodedParser });
 
 app.get('/', function (req, res) {
   res.send('Hello World');
