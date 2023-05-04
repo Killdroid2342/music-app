@@ -1,4 +1,7 @@
 const mysql = require('mysql2');
+const bcrypt = require('bcrypt');
+const saltRounds = 16;
+
 const conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -19,10 +22,11 @@ const isUserExists = async (username) => {
   return res;
 };
 
-const createUser = (username, password) => {
+const createUser = async (username, password) => {
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
   conn.query('INSERT INTO users (username, password) VALUES (?,?)', [
     username,
-    password,
+    hashedPassword,
   ]);
 };
 
