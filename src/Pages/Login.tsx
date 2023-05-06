@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+const { VITE_API_URL } = import.meta.env;
+import axios from 'axios';
 
 export default function Login() {
+  const instance = axios.create({
+    baseURL: VITE_API_URL,
+  });
   const [loginData, setLoginData] = useState({
     username: '',
     password: '',
@@ -24,9 +29,17 @@ export default function Login() {
     }));
   }
 
-  function handleRegisterSubmit(e: any) {
+  async function handleRegisterSubmit(e: any) {
     e.preventDefault();
     console.log(registerData);
+    const res = await instance.post(
+      'http://localhost:3000/user/register-user',
+      {
+        username: registerData.username,
+        password: registerData.password,
+      }
+    );
+    console.log(res);
   }
 
   function handleRegisterInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -83,7 +96,7 @@ export default function Login() {
               placeholder='Password'
               onChange={handleRegisterInputChange}
             />
-            <button type='submit'>Register</button>
+            <input type='submit' value='Register' />
           </form>
         </div>
       </div>
