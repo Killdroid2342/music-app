@@ -34,8 +34,9 @@ export default function Main(): JSX.Element {
       <div className='flex flex-row'>
         <SavedSongs handleSongClick={handleSongClick} songs={songs} />
         <div className='border border-red-900 w-10/12 flex flex-col justify-center items-center'>
-          <p className='text-2xl mt-4'>{currentSong?.name ?? 'Song Name'}</p>
-          <div className='border border-white h-96 w-96 mt-4'>img</div>
+          <p className='text-2xl mt-40 h-96'>
+            {currentSong?.name ?? 'Select Song'}
+          </p>
           {currentSong?.dataUrl ? (
             <audio
               ref={audioRef}

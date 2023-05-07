@@ -4,6 +4,7 @@ const { VITE_API_URL } = import.meta.env;
 import axios from 'axios';
 import Login from '../components/Login';
 import Register from '../components/Register';
+import Modal from '../components/Modal';
 
 export default function Home() {
   const instance = axios.create({
@@ -19,19 +20,6 @@ export default function Home() {
   });
 
   const [modal, setModal] = useState(false);
-
-  function handleLoginSubmit(e: React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-    console.log(loginData);
-  }
-
-  function handleLoginInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-    setLoginData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  }
 
   async function handleRegisterSubmit(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -61,15 +49,10 @@ export default function Home() {
 
   return (
     <>
-      <div>
-        <div className='w-40 text-center text-2xl'>{modal}</div>
-      </div>
-      <div className='main'>
-        <input type='checkbox' id='chk' aria-hidden='true' />
-        <Login
-          handleLoginSubmit={handleLoginSubmit}
-          handleLoginInputChange={handleLoginInputChange}
-        />
+      {modal !== false ? <Modal responseMessage={modal} /> : ''}
+
+      <div className='flex'>
+        <Login />
         <Register
           handleRegisterSubmit={handleRegisterSubmit}
           handleRegisterInputChange={handleRegisterInputChange}
