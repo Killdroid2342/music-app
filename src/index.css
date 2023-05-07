@@ -102,23 +102,12 @@ label {
   transform: scale(0.6);
   margin: 5% 0 5%;
 }
-/*Button*/
-.form button {
-  width: 85%;
-  height: 40px;
-  margin: 12px auto 10%;
-  color: #fff;
-  background: #573b8a;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: 0.2s ease-in;
-}
 
-.form button:hover {
-  background-color: #6d44b8;
+.regButton {
+  color: #240046;
+  font-weight: bold;
+  border: 2px solid #240046;
+  border-radius: 20px;
 }
 
 @tailwind base;
