@@ -1,6 +1,5 @@
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
-const saltRounds = 16;
 
 const conn = mysql.createConnection({
   host: 'localhost',
@@ -12,7 +11,7 @@ const isUserExists = async (username) => {
   const res = conn
     .promise()
     .query('SELECT * FROM users WHERE username = ?', [username])
-    .then(([rows]) => {
+    .then(([rows, fields]) => {
       if (rows.length > 0) {
         return rows[0];
       } else {
@@ -21,16 +20,21 @@ const isUserExists = async (username) => {
     });
   return res;
 };
-
+const hashPassword = async (password, saltRounds) => {
+  const res = bcrypt.hashSync(password, saltRounds);
+  return res;
+};
 const createUser = async (username, password) => {
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
   conn.query('INSERT INTO users (username, password) VALUES (?,?)', [
     username,
-    hashedPassword,
+    password,
   ]);
 };
+
+// compare passwords
 
 module.exports = {
   createUser,
   isUserExists,
+  hashPassword,
 };
