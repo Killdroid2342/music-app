@@ -29,17 +29,21 @@ router.post('/register-user', async (req, res) => {
 router.post('/login-user', async (req, res) => {
   const { username, clientpassword } = req.body;
   const { password } = await isUserExists(username);
-  if (
-    (await isUserExists(username)) !== false &&
-    (await comparePassswords(clientpassword, password)) == true
-  ) {
-    res.send({
-      message: 'correct details',
-    });
-  } else {
-    res.send({
-      message: 'incorrect login credentials',
-    });
+  try {
+    if (
+      (await isUserExists(username)) !== false &&
+      (await comparePassswords(clientpassword, password)) == true
+    ) {
+      res.send({
+        message: 'Correct details. Welcome',
+      });
+    } else {
+      res.send({
+        message: 'Incorrect login. Try Again',
+      });
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 
