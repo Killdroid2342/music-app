@@ -18,25 +18,46 @@ export default function Home() {
     username: '',
     password: '',
   });
-
   const [modal, setModal] = useState(false);
-
+  const [form, setForm] = useState('Register');
+  const changeForm = () => {
+    if (form === 'Register') {
+      setForm('Login');
+    } else {
+      setForm('Register');
+    }
+  };
   async function handleRegisterSubmit(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     console.log(registerData);
-    const res = await instance.post(
-      'http://localhost:3000/user/register-user',
-      {
-        username: registerData.username,
-        password: registerData.password,
-      }
-    );
-
-    // alert message
+    const res = await instance.post('/user/register-user', {
+      username: registerData.username,
+      password: registerData.password,
+    });
     setModal(res.data.message);
     setTimeout(() => {
       setModal(false);
     }, 1200);
+  }
+
+  async function handleLoginSubmit(e: React.ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+    const res = await instance.post('/user/login-user', {
+      username: loginData.username,
+      clientpassword: loginData.password,
+    });
+    setModal(res.data.message);
+    setTimeout(() => {
+      setModal(false);
+    }, 1200);
+  }
+
+  function handleLoginInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setLoginData((data) => ({
+      ...data,
+      [name]: value,
+    }));
   }
 
   function handleRegisterInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -51,12 +72,22 @@ export default function Home() {
     <>
       {modal !== false ? <Modal responseMessage={modal} /> : ''}
 
-      <div className='flex'>
-        <Login />
-        <Register
-          handleRegisterSubmit={handleRegisterSubmit}
-          handleRegisterInputChange={handleRegisterInputChange}
-        />
+      <div className='flex flex-col'>
+        {form === 'Register' ? (
+          <Login
+            handleLoginSubmit={handleLoginSubmit}
+            handleLoginInputChange={handleLoginInputChange}
+            changeForm={changeForm}
+            form={form}
+          />
+        ) : (
+          <Register
+            handleRegisterSubmit={handleRegisterSubmit}
+            handleRegisterInputChange={handleRegisterInputChange}
+            changeForm={changeForm}
+            form={form}
+          />
+        )}
       </div>
     </>
   );
