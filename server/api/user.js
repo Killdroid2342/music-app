@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const { createUser, isUserExists, hashPassword } = require('../modal/user');
-const bcrypt = require('bcrypt');
+const {
+  createUser,
+  isUserExists,
+  hashPassword,
+  comparePassswords,
+} = require('../modal/user');
 
 router.use(bodyParser.json());
 
@@ -16,7 +20,6 @@ router.post('/register-user', async (req, res) => {
       message: 'Users created successfully',
     });
   } else {
-    console.log('user exists. TRY AGAIN');
     res.send({
       message: 'Username already exists',
     });
@@ -25,9 +28,19 @@ router.post('/register-user', async (req, res) => {
 
 router.post('/login-user', async (req, res) => {
   const { username, clientpassword } = req.body;
-  console.log(await isUserExists(username));
   const { password } = await isUserExists(username);
-  console.log(password);
+  if (
+    (await isUserExists(username)) !== false &&
+    (await comparePassswords(clientpassword, password)) == true
+  ) {
+    res.send({
+      message: 'correct details',
+    });
+  } else {
+    res.send({
+      message: 'incorrect login credentials',
+    });
+  }
 });
 
 module.exports = router;
