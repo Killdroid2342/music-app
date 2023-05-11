@@ -69,7 +69,7 @@ export default function Home() {
   }
 
   return (
-    <>
+    <div className='background'>
       {modal !== false ? <Modal responseMessage={modal} /> : ''}
 
       <div className='flex flex-col'>
@@ -89,6 +89,6 @@ export default function Home() {
           />
         )}
       </div>
-    </>
+    </div>
   );
 }

@@ -18,6 +18,9 @@ body {
   background-color: #181818;
   color: white;
 }
+.background {
+  background-image: url('../src/assets/img/background-main.jpg');
+}
 
 @tailwind base;
 @tailwind components;
