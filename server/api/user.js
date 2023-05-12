@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
+require('dotenv').config();
+
 const {
   createUser,
   isUserExists,
   hashPassword,
   comparePassswords,
+  jwtToken,
 } = require('../modal/user');
 
 router.use(bodyParser.json());
@@ -34,8 +37,10 @@ router.post('/login-user', async (req, res) => {
       (await isUserExists(username)) !== false &&
       (await comparePassswords(clientpassword, password)) == true
     ) {
+      console.log(jwtToken());
       res.send({
         message: 'Correct details. Welcome',
+        token: jwtToken(username),
       });
     } else {
       res.send({
