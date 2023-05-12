@@ -1,5 +1,7 @@
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const conn = mysql.createConnection({
   host: 'localhost',
@@ -36,9 +38,21 @@ const createUser = async (username, password) => {
 async function comparePassswords(passwords, hash) {
   return bcrypt.compareSync(passwords, hash);
 }
+
+const jwtToken = (username) => {
+  const jwtSignin = jwt.sign(
+    {
+      data: username,
+    },
+    process.env.acsessToken,
+    { expiresIn: '7d' }
+  );
+  return jwtSignin;
+};
 module.exports = {
   createUser,
   isUserExists,
   hashPassword,
   comparePassswords,
+  jwtToken,
 };
