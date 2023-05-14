@@ -9,6 +9,7 @@ const {
   hashPassword,
   comparePassswords,
   jwtToken,
+  verifyToken,
 } = require('../modal/user');
 
 router.use(bodyParser.json());

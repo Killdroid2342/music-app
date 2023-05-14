@@ -42,17 +42,24 @@ async function comparePassswords(passwords, hash) {
 const jwtToken = (username) => {
   const jwtSignin = jwt.sign(
     {
-      data: username,
+      username,
     },
     process.env.acsessToken,
     { expiresIn: '7d' }
   );
   return jwtSignin;
 };
+
+async function verifyToken(username) {
+  const res = jwt.verify(username, process.env.acsessToken);
+  return res;
+}
+
 module.exports = {
   createUser,
   isUserExists,
   hashPassword,
   comparePassswords,
   jwtToken,
+  verifyToken,
 };
