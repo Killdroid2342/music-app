@@ -5,6 +5,7 @@ import axios from 'axios';
 import Login from '../components/Login';
 import Register from '../components/Register';
 import Modal from '../components/Modal';
+import Cookies from 'js-cookie';
 
 export default function Home() {
   const instance = axios.create({
@@ -46,6 +47,8 @@ export default function Home() {
       username: loginData.username,
       clientpassword: loginData.password,
     });
+    Cookies.set('UserjwtToken', res.data.token);
+
     setModal(res.data.message);
     setTimeout(() => {
       setModal(false);
