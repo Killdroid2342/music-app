@@ -3,6 +3,7 @@ import SavedSongs from '../components/SavedSongs';
 import Controls from '../components/Controls';
 import ImportingFiles from '../components/ImportingFiles';
 import ProgressBar from '../components/ProgressBar';
+import Nav from '../components/Nav';
 
 export interface Song {
   name: string;
@@ -27,10 +28,8 @@ export default function Main(): JSX.Element {
   return (
     <>
       <h1 className='text-center text-3xl font-bold font-mono'>Music Player</h1>
-      <div className='flex flex-row justify-end mr-5'>
-        <p>Account: ADMIN</p>
-        <button className='border border-white'>Sign Out</button>
-      </div>
+      <Nav />
+
       <div className='flex flex-row'>
         <SavedSongs handleSongClick={handleSongClick} songs={songs} />
         <div className='border border-red-900 w-10/12 flex flex-col justify-center items-center'>
