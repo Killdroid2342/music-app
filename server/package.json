@@ -15,7 +15,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.2.3"
   },
