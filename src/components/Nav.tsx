@@ -5,11 +5,8 @@ const Nav = () => {
   return (
     <nav className='border border-white rounded-2xl text-center mb-5'>
       <ul className='justify-evenly'>
-        <Link to={'/upload'} className='mr-40'>
-          Upload Songs
-        </Link>
         <Link to={'/'} className=''>
-          Sign Out
+          Sign Out {'USER HERE'}
         </Link>
       </ul>
     </nav>

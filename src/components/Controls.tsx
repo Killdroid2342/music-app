@@ -87,21 +87,19 @@ export default function Controls({
             className='border border-blue-900 p-3 cursor-pointer'
             onClick={handlePreviousSongClick}
           >
-            {currentSong && songs.length > 1
-              ? 'Previous Song'
-              : 'No Previous Song'}
+            ⏮
           </p>
           <p
             className='border border-blue-900 p-3 cursor-pointer'
             onClick={handlePlayPauseClick}
           >
-            {currentSong ? (isPlaying ? '▐▐' : ' ▶ ') : 'No Songs'}
+            {currentSong ? (isPlaying ? '⏸' : ' ▶️') : 'No Songs'}
           </p>
           <p
             className='border border-blue-900 p-3 cursor-pointer'
             onClick={handleNextSongClick}
           >
-            {currentSong && songs.length > 1 ? 'Next Song' : 'No Next Song'}
+            ⏭
           </p>
         </div>
 
@@ -110,19 +108,19 @@ export default function Controls({
             className='border border-green-900 p-3 cursor-pointer'
             onClick={handleSkipBackwardClick}
           >
-            Back 10
+            ⬅️
           </p>
           <p
             className='border border-green-900 p-3 cursor-pointer'
             onClick={handleSkipForwardClick}
           >
-            Forward 10
+            ➡️
           </p>
           <p
             className='border border-green-900 p-3 cursor-pointer'
             onClick={handleRestartSongClick}
           >
-            Restart Song
+            🔁
           </p>
         </div>
       </div>
