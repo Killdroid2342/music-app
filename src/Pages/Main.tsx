@@ -3,7 +3,6 @@ import SavedSongs from '../components/SavedSongs';
 import Controls from '../components/Controls';
 import ImportingFiles from '../components/ImportingFiles';
 import ProgressBar from '../components/ProgressBar';
-import Nav from '../components/Nav';
 
 export interface Song {
   name: string;
@@ -27,15 +26,15 @@ export default function Main(): JSX.Element {
 
   return (
     <>
-      <h1 className='text-center text-3xl font-bold font-mono'>Music Player</h1>
-      <Nav />
-
       <div className='flex flex-row'>
-        <SavedSongs handleSongClick={handleSongClick} songs={songs} />
-        <div className='border border-red-900 w-10/12 flex flex-col justify-center items-center'>
-          <p className='text-2xl mt-40 h-96'>
-            {currentSong?.name ?? 'Select Song'}
-          </p>
+        <ImportingFiles
+          songs={songs}
+          setSongs={setSongs}
+          handleSongClick={handleSongClick}
+        />
+        <div className='border border-red-900 w-10/12 flex flex-col justify-center items-center h-screen'>
+          <p className='text-2xl'>{currentSong?.name ?? 'Select Song'}</p>
+
           {currentSong?.dataUrl ? (
             <audio
               ref={audioRef}
@@ -61,14 +60,11 @@ export default function Main(): JSX.Element {
             currentSong={currentSong}
             setCurrentSong={setCurrentSong}
             songs={songs}
-          />
-          <ProgressBar
             progress={progress}
-            currentSong={currentSong}
-            audioRef={audioRef}
           />
         </div>
-        <ImportingFiles songs={songs} setSongs={setSongs} />
+
+        <SavedSongs handleSongClick={handleSongClick} songs={songs} />
       </div>
     </>
   );
