@@ -51,20 +51,29 @@ export default function ImportingFiles({ songs, setSongs }: any) {
   };
 
   return (
-    <div className='border border-blue-900 w-56 flex flex-col'>
-      <p>Upload Songs Here</p>
+    <div className='border border-blue-900 w-56 flex flex-col bg-neutral-700'>
+      <p className='font-bold mb-2 text-center text-xl'>Upload Songs Here</p>
       <input
         type='text'
         placeholder='Song Name'
         value={songName}
         onChange={handleNameInput}
-        className='text-black'
+        className='text-center border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80'
       />
-      <input type='file' onChange={handleFileUpload} />
-      <button className='border' onClick={handleSubmit}>
+      <input
+        type='file'
+        className='border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80'
+        onChange={handleFileUpload}
+      />
+      <button
+        className='border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80'
+        onClick={handleSubmit}
+      >
         Submit
       </button>
-      {successMessage && <p className='text-green-500'>{successMessage}</p>}
+      {successMessage && (
+        <p className='text-green-500 mt-2'>{successMessage}</p>
+      )}
     </div>
   );
 }

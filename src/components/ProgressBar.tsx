@@ -11,7 +11,7 @@ export default function ProgressBar({ progress, currentSong, audioRef }: any) {
   return (
     <>
       <div
-        className='border border-purple-900 w-full text-center mt-20'
+        className='text-center mt-5'
         style={{
           backgroundColor: '#FFF', // BACKGROUND COLOUR
           height: '10px',
@@ -25,18 +25,18 @@ export default function ProgressBar({ progress, currentSong, audioRef }: any) {
             top: 0,
             bottom: 0,
             left: 0,
-            backgroundColor: '#8B0000', // PROGRESS COLOUR
+            backgroundColor: '#111111', // PROGRESS COLOUR
             width: `${progress}%`,
           }}
         ></div>
+        <p className='mt-5'>
+          {currentSong
+            ? `${formatTime(audioRef.current?.currentTime ?? 0)} / ${formatTime(
+                audioRef.current?.duration ?? 0
+              )}`
+            : '0:00 / 0:00'}
+        </p>
       </div>
-      <p className='text-center'>
-        {currentSong
-          ? `${formatTime(audioRef.current?.currentTime ?? 0)} / ${formatTime(
-              audioRef.current?.duration ?? 0
-            )}`
-          : '0:00 / 0:00'}
-      </p>
     </>
   );
 }
