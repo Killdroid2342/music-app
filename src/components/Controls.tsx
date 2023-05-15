@@ -1,4 +1,5 @@
 import React from 'react';
+import ProgressBar from './ProgressBar';
 
 export default function Controls({
   isPlaying,
@@ -7,6 +8,7 @@ export default function Controls({
   currentSong,
   setCurrentSong,
   songs,
+  progress,
 }: any) {
   const handleRestartSongClick = () => {
     if (audioRef.current) {
@@ -27,17 +29,6 @@ export default function Controls({
     }
   };
 
-  const handleSkipBackwardClick = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime -= 10;
-    }
-  };
-
-  const handleSkipForwardClick = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime += 10;
-    }
-  };
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const volume = parseFloat(event.target.value);
     if (audioRef.current) {
@@ -70,57 +61,51 @@ export default function Controls({
   };
   return (
     <>
-      <div className='border border-white w-full flex flex-row justify-evenly'>
-        <div className='border border-red-900 p-3 cursor-pointer flex flex-col'>
+      <div className='fixed bottom-0 left-0 right-0 border border-white w-full flex flex-row justify-evenly bg-neutral-700 rounded-lg'>
+        <ProgressBar
+          progress={progress}
+          currentSong={currentSong}
+          audioRef={audioRef}
+        />
+        <div className='border border-white p-3 flex flex-col rounded-lg'>
           <input
             type='range'
             min='0'
             max='1'
             step='0.01'
             onChange={handleVolumeChange}
+            className='cursor-pointer'
           />
-          Music Volume
+          <p className='text-center mt-2'>Music Volume</p>
         </div>
 
-        <div className='flex flex-row border border-blue-400'>
+        <div className='flex flex-row'>
           <p
-            className='border border-blue-900 p-3 cursor-pointer'
+            className='border border-white p-3 cursor-pointer rounded-lg'
             onClick={handlePreviousSongClick}
           >
-            ⏮
+            {currentSong && songs.length > 1 ? '⏮' : '⏮'}
           </p>
           <p
-            className='border border-blue-900 p-3 cursor-pointer'
+            className='border border-white p-3 cursor-pointer rounded-lg'
             onClick={handlePlayPauseClick}
           >
-            {currentSong ? (isPlaying ? '⏸' : ' ▶️') : 'No Songs'}
+            {currentSong ? (isPlaying ? '⏸' : '▶️') : '⏸'}
           </p>
           <p
-            className='border border-blue-900 p-3 cursor-pointer'
+            className='border border-white p-3 cursor-pointer rounded-lg'
             onClick={handleNextSongClick}
           >
             ⏭
           </p>
         </div>
 
-        <div className='flex flex-row border border-green-400'>
+        <div className='flex flex-row'>
           <p
-            className='border border-green-900 p-3 cursor-pointer'
-            onClick={handleSkipBackwardClick}
-          >
-            ⬅️
-          </p>
-          <p
-            className='border border-green-900 p-3 cursor-pointer'
-            onClick={handleSkipForwardClick}
-          >
-            ➡️
-          </p>
-          <p
-            className='border border-green-900 p-3 cursor-pointer'
+            className='border border-white p-3 cursor-pointer'
             onClick={handleRestartSongClick}
           >
-            🔁
+            🔄
           </p>
         </div>
       </div>
