@@ -51,7 +51,7 @@ export default function ImportingFiles({ songs, setSongs }: any) {
   };
 
   return (
-    <div className='border border-blue-900 w-56 flex flex-col bg-neutral-700'>
+    <div className='border border-white p-2 w-56 flex flex-col bg-neutral-700'>
       <p className='font-bold mb-2 text-center text-xl'>Upload Songs Here</p>
       <input
         type='text'

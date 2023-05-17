@@ -32,7 +32,7 @@ export default function Main(): JSX.Element {
           setSongs={setSongs}
           handleSongClick={handleSongClick}
         />
-        <div className='border border-red-900 w-10/12 flex flex-col justify-center items-center h-screen'>
+        <div className='h-screen w-10/12 flex flex-col justify-center items-center'>
           <p className='text-2xl'>{currentSong?.name ?? 'Select Song'}</p>
 
           {currentSong?.dataUrl ? (
@@ -53,6 +53,7 @@ export default function Main(): JSX.Element {
               <source src={currentSong.dataUrl} type='audio/mpeg' />
             </audio>
           ) : null}
+
           <Controls
             audioRef={audioRef}
             isPlaying={isPlaying}
