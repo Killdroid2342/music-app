@@ -39,27 +39,9 @@ async function comparePassswords(passwords, hash) {
   return bcrypt.compareSync(passwords, hash);
 }
 
-const jwtToken = (username) => {
-  const jwtSignin = jwt.sign(
-    {
-      username,
-    },
-    process.env.acsessToken,
-    { expiresIn: '7d' }
-  );
-  return jwtSignin;
-};
-
-async function verifyToken(username) {
-  const res = jwt.verify(username, process.env.acsessToken);
-  return res;
-}
-
 module.exports = {
   createUser,
   isUserExists,
   hashPassword,
   comparePassswords,
-  jwtToken,
-  verifyToken,
 };

@@ -8,9 +8,9 @@ const {
   isUserExists,
   hashPassword,
   comparePassswords,
-  jwtToken,
-  verifyToken,
 } = require('../modal/user');
+
+const { jwtToken } = require('../modal/token');
 
 router.use(bodyParser.json());
 
