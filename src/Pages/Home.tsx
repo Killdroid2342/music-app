@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 const { VITE_API_URL } = import.meta.env;
 import axios from 'axios';
 import Login from '../components/Login';
@@ -21,6 +21,9 @@ export default function Home() {
   });
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState('Register');
+
+  const navigate = useNavigate();
+
   const changeForm = () => {
     if (form === 'Register') {
       setForm('Login');
@@ -40,12 +43,8 @@ export default function Home() {
     }, 1200);
   }
 
-  // Make request to auth endpoint.
   async function handleAuth(e: any) {
-    const res = await instance.post('/auth/validate-token', {
-      username: loginData.username,
-      clientpassword: loginData.password,
-    });
+    const res = await instance.post('/auth/validate-token', {});
   }
 
   async function handleLoginSubmit(e: React.ChangeEvent<HTMLInputElement>) {
@@ -60,6 +59,12 @@ export default function Home() {
     setTimeout(() => {
       setModal(false);
     }, 1200);
+
+    if (res.data.message === 'Correct details. Welcome') {
+      setTimeout(() => {
+        navigate('/main');
+      }, 2000);
+    } else return;
   }
 
   function handleLoginInputChange(e: React.ChangeEvent<HTMLInputElement>) {
