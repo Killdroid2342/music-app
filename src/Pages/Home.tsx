@@ -30,7 +30,6 @@ export default function Home() {
   };
   async function handleRegisterSubmit(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
-    console.log(registerData);
     const res = await instance.post('/user/register-user', {
       username: registerData.username,
       password: registerData.password,
@@ -39,6 +38,14 @@ export default function Home() {
     setTimeout(() => {
       setModal(false);
     }, 1200);
+  }
+
+  // Make request to auth endpoint.
+  async function handleAuth(e: any) {
+    const res = await instance.post('/auth/validate-token', {
+      username: loginData.username,
+      clientpassword: loginData.password,
+    });
   }
 
   async function handleLoginSubmit(e: React.ChangeEvent<HTMLInputElement>) {
