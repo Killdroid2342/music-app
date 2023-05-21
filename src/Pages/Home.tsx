@@ -24,6 +24,7 @@ export default function Home() {
 
   const navigate = useNavigate();
 
+  const tokenVal = Cookies.get('UserjwtToken');
   const changeForm = () => {
     if (form === 'Register') {
       setForm('Login');
@@ -43,10 +44,6 @@ export default function Home() {
     }, 1200);
   }
 
-  async function handleAuth(e: any) {
-    const res = await instance.post('/auth/validate-token', {});
-  }
-
   async function handleLoginSubmit(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     const res = await instance.post('/user/login-user', {
@@ -59,13 +56,19 @@ export default function Home() {
     setTimeout(() => {
       setModal(false);
     }, 1200);
-
-    if (res.data.message === 'Correct details. Welcome') {
-      setTimeout(() => {
-        navigate('/main');
-      }, 2000);
+  }
+  async function handleAuth() {
+    const res = await instance.post('/auth/validate-token', {
+      token: tokenVal,
+    });
+    if (res.data === 'this is validate token') {
+      navigate('/main');
     } else return;
   }
+
+  useEffect(() => {
+    handleAuth();
+  }, []);
 
   function handleLoginInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
