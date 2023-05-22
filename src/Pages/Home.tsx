@@ -25,6 +25,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   const tokenVal = Cookies.get('UserjwtToken');
+
   const changeForm = () => {
     if (form === 'Register') {
       setForm('Login');
@@ -57,11 +58,12 @@ export default function Home() {
       setModal(false);
     }, 1200);
   }
+
   async function handleAuth() {
     const res = await instance.post('/auth/validate-token', {
       token: tokenVal,
     });
-    if (res.data === 'this is validate token') {
+    if (res.data.value) {
       navigate('/main');
     } else return;
   }
