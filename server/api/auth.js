@@ -6,9 +6,14 @@ require('dotenv').config();
 
 router.post('/validate-token', async (req, res) => {
   console.log('This is validate token');
-  const { username } = req.body;
+  const { token } = req.body;
 
   try {
+    console.log(token);
+
+    const decodedToken = jwt.verify(token, process.env.acsessToken);
+    const { username } = decodedToken;
+
     const { clientUsername } = await verifyToken(username);
     if (clientUsername === username) {
       res.send('Good Token');
@@ -17,6 +22,7 @@ router.post('/validate-token', async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.status(500).send('Error validating token');
   }
 });
 
