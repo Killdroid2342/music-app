@@ -1,9 +1,13 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-async function verifyToken(username) {
-  const res = jwt.verify(username, process.env.acsessToken);
-  return res;
+async function verifyToken(token) {
+  try {
+    const res = jwt.verify(token, process.env.acsessToken);
+    return res;
+  } catch (err) {
+    return false;
+  }
 }
 
 const jwtToken = (username) => {
