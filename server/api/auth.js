@@ -10,11 +10,8 @@ router.post('/validate-token', async (req, res) => {
   console.log('This is validate token');
   const { token } = req.body;
   console.log(token);
-  try {
-    console.log(token);
-
-    const decodedToken = jwt.verify(token, process.env.acsessToken);
-  } catch (error) {}
+  console.log(token);
+  console.log(await verifyToken(token));
 });
 
 module.exports = router;
