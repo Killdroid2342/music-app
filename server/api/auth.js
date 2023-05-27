@@ -10,6 +10,7 @@ router.post('/validate-token', async (req, res) => {
   const { token } = req.body;
   console.log(token);
   console.log(await verifyToken(token));
+
   if ((await verifyToken(token)) !== false) {
     res.send({
       message: 'correct token',

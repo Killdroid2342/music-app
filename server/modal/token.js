@@ -20,6 +20,7 @@ const jwtToken = (username) => {
   );
   return jwtSignin;
 };
+
 module.exports = {
   verifyToken,
   jwtToken,

@@ -63,9 +63,11 @@ export default function Home() {
     const res = await instance.post('/auth/validate-token', {
       token: tokenVal,
     });
-    if (res.data.value) {
+    if (res.data.message === 'correct token') {
       navigate('/main');
-    } else return;
+    } else {
+      return;
+    }
   }
 
   useEffect(() => {
