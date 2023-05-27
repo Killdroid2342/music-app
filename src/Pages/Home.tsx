@@ -69,10 +69,9 @@ export default function Home() {
       return;
     }
   }
-
   useEffect(() => {
     handleAuth();
-  }, []);
+  });
 
   function handleLoginInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;

@@ -21,6 +21,7 @@ const Login = ({
               placeholder='Username'
               onChange={handleLoginInputChange}
               className='p-2 rounded-md text-black border border-black'
+              required
             />
           </div>
           <div className='flex flex-col mx-auto w-fit'>
@@ -31,6 +32,7 @@ const Login = ({
               placeholder='Password'
               onChange={handleLoginInputChange}
               className='p-2 rounded-md text-black border border-black'
+              required
             />
           </div>
           <div className='flex flex-col mx-auto w-fit'>

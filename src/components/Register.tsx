@@ -21,6 +21,7 @@ const Register = ({
               placeholder='Username'
               onChange={handleRegisterInputChange}
               className='p-2 rounded-md text-black border border-black'
+              required
             />
           </div>
           <div className='flex flex-col mx-auto w-fit'>
@@ -31,6 +32,7 @@ const Register = ({
               placeholder='Password'
               onChange={handleRegisterInputChange}
               className='p-2 rounded-md text-black border border-black'
+              required
             />
           </div>
           <div className='flex flex-col mx-auto w-fit'>
