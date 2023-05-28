@@ -66,6 +66,7 @@ export default function Home() {
     if (res.data.message === 'correct token') {
       navigate('/main');
     } else {
+      console.log(res.data.message);
       return;
     }
   }
