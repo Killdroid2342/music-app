@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { decodeToken } from 'react-jwt';
 
 export default function SavedSongs({ handleSongClick, songs }: any) {
   const navigate = useNavigate();
@@ -8,9 +9,18 @@ export default function SavedSongs({ handleSongClick, songs }: any) {
     Cookies.remove('UserjwtToken');
     navigate('/');
   };
+  const usernameJWT = () => {
+    const getJWT = Cookies.get('UserjwtToken');
+    const decodedToken = decodeToken(getJWT);
+    console.log(getJWT);
+    console.log(decodedToken);
+  };
+  useEffect(() => {
+    usernameJWT();
+  });
   return (
     <div className='border border-white flex flex-col bg-neutral-700 text-center p-2'>
-      <h2>Account: {'ADMIN'}</h2>
+      <h2>Account: {}</h2>
       <h2 onClick={backToHome} className='border border-white'>
         Log Out
       </h2>
