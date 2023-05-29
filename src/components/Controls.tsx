@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProgressBar from './ProgressBar';
 
 export default function Controls({
@@ -10,6 +10,8 @@ export default function Controls({
   songs,
   progress,
 }: any) {
+  const [volume, setVolume] = useState(0);
+
   const handleRestartSongClick = () => {
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
@@ -34,6 +36,7 @@ export default function Controls({
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
+    setVolume(volume);
   };
   const handlePreviousSongClick = () => {
     if (currentSong) {
@@ -59,6 +62,7 @@ export default function Controls({
       }
     }
   };
+
   return (
     <>
       <div className='fixed bottom-0 left-0 right-0 border border-white w-full flex flex-row justify-evenly bg-neutral-700 rounded-lg'>
@@ -76,7 +80,7 @@ export default function Controls({
             onChange={handleVolumeChange}
             className='cursor-pointer'
           />
-          <p className='text-center mt-2'>Music Volume</p>
+          <p className='text-center mt-2'>Music Volume: {volume}</p>
         </div>
 
         <div className='flex flex-row'>
@@ -102,7 +106,7 @@ export default function Controls({
 
         <div className='flex flex-row'>
           <p
-            className='border border-white p-3 cursor-pointer'
+            className='border border-white p-3 cursor-pointer rounded-lg'
             onClick={handleRestartSongClick}
           >
             🔄
