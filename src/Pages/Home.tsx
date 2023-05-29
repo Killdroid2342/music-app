@@ -6,7 +6,7 @@ import Login from '../components/Login';
 import Register from '../components/Register';
 import Modal from '../components/Modal';
 import Cookies from 'js-cookie';
-
+import SavedSongs from '../components/SavedSongs';
 export default function Home() {
   const instance = axios.create({
     baseURL: VITE_API_URL,
@@ -64,7 +64,9 @@ export default function Home() {
       token: tokenVal,
     });
     if (res.data.message === 'correct token') {
-      navigate('/main');
+      setTimeout(() => {
+        navigate('/main');
+      }, 2000);
     } else {
       console.log(res.data.message);
       return;
