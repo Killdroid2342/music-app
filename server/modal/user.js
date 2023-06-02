@@ -33,8 +33,6 @@ const createUser = async (username, password) => {
   ]);
 };
 
-// compare passwords
-
 async function comparePassswords(passwords, hash) {
   return bcrypt.compareSync(passwords, hash);
 }
