@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
 import { Song } from '../Pages/Main';
+import axios from 'axios';
+const { VITE_API_URL } = import.meta.env;
 
 export default function ImportingFiles({ songs, setSongs }: any) {
+  const instance = axios.create({
+    baseURL: VITE_API_URL,
+  });
+
   const [songName, setSongName] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
+
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  };
 
   const handleFileUpload = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -22,7 +34,9 @@ export default function ImportingFiles({ songs, setSongs }: any) {
     setSongName(name);
   };
 
-  const handleSubmit = (): void => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
     if (songName === '') {
       alert('ENTER NAME');
       return;
@@ -32,45 +46,35 @@ export default function ImportingFiles({ songs, setSongs }: any) {
       alert('CHOOSE YOUR MP3 FILE');
       return;
     }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string | undefined;
-      if (!result) return;
-
-      const newSong: Song = {
-        name: songName,
-        dataUrl: result,
-      };
-      setSongs([...songs, newSong]);
-      setSuccessMessage(` You have uploaded: "${songName}" :)`);
-      setSongName('');
-      setFile(null);
-    };
-    reader.readAsDataURL(file);
+    const formData = new FormData();
+    formData.append('files', file);
+    const res = await instance.post('/songs/upload-song', formData, config);
+    console.log(res.data);
   };
 
   return (
     <div className='border border-white p-2 w-56 flex flex-col bg-neutral-700'>
       <p className='font-bold mb-2 text-center text-xl'>Upload Songs Here</p>
-      <input
-        type='text'
-        placeholder='Song Name'
-        value={songName}
-        onChange={handleNameInput}
-        className='text-center border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80'
-      />
-      <input
-        type='file'
-        className='border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80'
-        onChange={handleFileUpload}
-      />
-      <button
-        className='border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80'
-        onClick={handleSubmit}
-      >
-        Submit
-      </button>
+      <form method='POST' action='' encType='multipart/form-data'>
+        <input
+          type='text'
+          placeholder='Song Name'
+          value={songName}
+          onChange={handleNameInput}
+          className='text-center border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80'
+        />
+        <input
+          type='file'
+          className='text-center border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80 w-full'
+          onChange={handleFileUpload}
+          name='files'
+        />
+        <input
+          type='submit'
+          className='text-center border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80 w-full'
+          onClick={handleSubmit}
+        />
+      </form>
       {successMessage && (
         <p className='text-green-500 mt-2'>{successMessage}</p>
       )}
