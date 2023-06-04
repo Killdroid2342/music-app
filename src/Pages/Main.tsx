@@ -1,8 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import SavedSongs from '../components/SavedSongs';
 import Controls from '../components/Controls';
 import ImportingFiles from '../components/ImportingFiles';
 import ProgressBar from '../components/ProgressBar';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { decodeToken } from 'react-jwt';
 
 export interface Song {
   name: string;
@@ -24,13 +27,34 @@ export default function Main(): JSX.Element {
     }
   };
 
+  // GETTING USERNAME
+
+  const [clientUsername, setClientUsername] = useState('');
+
+  const navigate = useNavigate();
+  const backToHome = () => {
+    Cookies.remove('UserjwtToken');
+    navigate('/');
+  };
+  const usernameJWT = () => {
+    const getJWT = Cookies.get('UserjwtToken');
+
+    if (getJWT) {
+      const decodedTokenUsername = (decodeToken(getJWT) as { username: string })
+        .username;
+      setClientUsername(decodedTokenUsername);
+    } else return;
+  };
+  useEffect(() => {
+    usernameJWT();
+  });
+
   return (
     <>
       <div className='flex flex-row'>
         <ImportingFiles
-          songs={songs}
-          setSongs={setSongs}
           handleSongClick={handleSongClick}
+          clientUsername={clientUsername}
         />
         <div className='h-screen w-10/12 flex flex-col justify-center items-center'>
           <p className='text-2xl'>{currentSong?.name ?? 'Select Song'}</p>
@@ -65,7 +89,12 @@ export default function Main(): JSX.Element {
           />
         </div>
 
-        <SavedSongs handleSongClick={handleSongClick} songs={songs} />
+        <SavedSongs
+          clientUsername={clientUsername}
+          backToHome={backToHome}
+          handleSongClick={handleSongClick}
+          songs={songs}
+        />
       </div>
     </>
   );
