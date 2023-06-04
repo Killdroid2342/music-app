@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Song } from '../Pages/Main';
 import axios from 'axios';
 const { VITE_API_URL } = import.meta.env;
 
-export default function ImportingFiles({ songs, setSongs }: any) {
+export default function ImportingFiles({
+  songs,
+  setSongs,
+  clientUsername,
+}: any) {
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
@@ -18,18 +21,14 @@ export default function ImportingFiles({ songs, setSongs }: any) {
     },
   };
 
-  const handleFileUpload = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     setFile(file);
   };
 
-  const handleNameInput = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
     setSongName(name);
   };
@@ -46,8 +45,12 @@ export default function ImportingFiles({ songs, setSongs }: any) {
       alert('CHOOSE YOUR MP3 FILE');
       return;
     }
+
     const formData = new FormData();
     formData.append('files', file);
+    formData.append('songName', songName);
+    formData.append('username', clientUsername);
+
     const res = await instance.post('/songs/upload-song', formData, config);
     console.log(res.data);
   };
