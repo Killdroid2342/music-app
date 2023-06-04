@@ -1,28 +1,9 @@
-import Cookies from 'js-cookie';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { decodeToken } from 'react-jwt';
-
-export default function SavedSongs({ handleSongClick, songs }: any) {
-  const [clientUsername, setClientUsername] = useState('');
-
-  const navigate = useNavigate();
-  const backToHome = () => {
-    Cookies.remove('UserjwtToken');
-    navigate('/');
-  };
-  const usernameJWT = () => {
-    const getJWT = Cookies.get('UserjwtToken');
-
-    if (getJWT) {
-      const decodedTokenUsername = (decodeToken(getJWT) as { username: string })
-        .username;
-      setClientUsername(decodedTokenUsername);
-    } else return;
-  };
-  useEffect(() => {
-    usernameJWT();
-  });
+export default function SavedSongs({
+  clientUsername,
+  backToHome,
+  handleSongClick,
+  songs,
+}: any) {
   return (
     <div className='border border-white flex flex-col bg-neutral-700 text-center p-2'>
       <h2 className='font-bold text-lg'>Account: {clientUsername}</h2>
