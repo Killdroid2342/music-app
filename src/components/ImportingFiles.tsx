@@ -13,7 +13,6 @@ export default function ImportingFiles({
 
   const [songName, setSongName] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const [successMessage, setSuccessMessage] = useState('');
 
   const config = {
     headers: {
@@ -28,8 +27,8 @@ export default function ImportingFiles({
     setFile(file);
   };
 
-  const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
+  const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
     setSongName(name);
   };
 
@@ -43,6 +42,11 @@ export default function ImportingFiles({
 
     if (!file) {
       alert('CHOOSE YOUR MP3 FILE');
+      return;
+    }
+
+    if (!file.type.startsWith('audio/')) {
+      alert('This is not an audio file. Choose an audio file');
       return;
     }
 
@@ -68,6 +72,7 @@ export default function ImportingFiles({
         />
         <input
           type='file'
+          accept='audio/mpeg, audio/wav, audio/x-wav, audio/ogg'
           className='text-center border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80 w-full'
           onChange={handleFileUpload}
           name='files'
@@ -78,9 +83,6 @@ export default function ImportingFiles({
           onClick={handleSubmit}
         />
       </form>
-      {successMessage && (
-        <p className='text-green-500 mt-2'>{successMessage}</p>
-      )}
     </div>
   );
 }
