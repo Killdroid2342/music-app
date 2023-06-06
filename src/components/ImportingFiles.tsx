@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 const { VITE_API_URL } = import.meta.env;
 
@@ -13,6 +13,7 @@ export default function ImportingFiles({
 
   const [songName, setSongName] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [message, setMessage] = useState('');
 
   const config = {
     headers: {
@@ -20,8 +21,8 @@ export default function ImportingFiles({
     },
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
 
     setFile(file);
@@ -55,8 +56,13 @@ export default function ImportingFiles({
     formData.append('songName', songName);
     formData.append('username', clientUsername);
 
+    console.log(formData);
+    console.log(e);
     const res = await instance.post('/songs/upload-song', formData, config);
-    console.log(res.data);
+    setMessage(res.data.message);
+    setTimeout(() => {
+      setMessage('');
+    }, 3000);
   };
 
   return (
@@ -83,6 +89,7 @@ export default function ImportingFiles({
           onClick={handleSubmit}
         />
       </form>
+      <p className='font-bold text-2xl'>{message}</p>
     </div>
   );
 }

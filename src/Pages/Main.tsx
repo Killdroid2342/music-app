@@ -18,6 +18,7 @@ export default function Main(): JSX.Element {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState<number>(0);
+  const [clientUsername, setClientUsername] = useState('');
 
   const handleSongClick = (song: Song) => {
     setCurrentSong(song);
@@ -26,10 +27,6 @@ export default function Main(): JSX.Element {
       audioRef.current.play();
     }
   };
-
-  // GETTING USERNAME
-
-  const [clientUsername, setClientUsername] = useState('');
 
   const navigate = useNavigate();
   const backToHome = () => {
