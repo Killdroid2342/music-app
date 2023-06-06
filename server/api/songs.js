@@ -21,15 +21,20 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/upload-song', upload.single('files'), async (req, res) => {
-  const { username, songName } = req.body;
-  const musicFileName = req.file.filename;
-  console.log(musicFileName);
-  const dateOfSongAdded = new Date();
-  uploadSongs(username, dateOfSongAdded, songName, musicFileName);
-  console.log(username);
-  console.log(dateOfSongAdded);
-  console.log(songName);
-  console.log(musicFileName);
+  try {
+    const { username, songName } = req.body;
+    const musicFileName = req.file.filename;
+    const dateOfSongAdded = new Date();
+    uploadSongs(username, dateOfSongAdded, songName, musicFileName);
+    res.send({
+      message: 'You have successfully uploaded song :)',
+    });
+  } catch (err) {
+    console.log(err);
+    res.send({
+      message: 'There has been an error uploading your songs :(',
+    });
+  }
 });
 
 module.exports = router;
