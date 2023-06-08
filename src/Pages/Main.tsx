@@ -12,6 +12,12 @@ export interface Song {
   dataUrl: string;
 }
 
+window.history.pushState(null, '', window.location.href);
+
+window.onpopstate = function () {
+  window.history.go(1);
+};
+
 export default function Main(): JSX.Element {
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
@@ -33,6 +39,7 @@ export default function Main(): JSX.Element {
     Cookies.remove('UserjwtToken');
     navigate('/');
   };
+
   const usernameJWT = () => {
     const getJWT = Cookies.get('UserjwtToken');
 
@@ -42,6 +49,7 @@ export default function Main(): JSX.Element {
       setClientUsername(decodedTokenUsername);
     } else return;
   };
+
   useEffect(() => {
     usernameJWT();
   });

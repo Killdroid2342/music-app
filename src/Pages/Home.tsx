@@ -6,6 +6,13 @@ import Login from '../components/Login';
 import Register from '../components/Register';
 import Modal from '../components/Modal';
 import Cookies from 'js-cookie';
+
+window.history.pushState(null, '', window.location.href);
+
+window.onpopstate = function () {
+  window.history.go(1);
+};
+
 export default function Home() {
   const instance = axios.create({
     baseURL: VITE_API_URL,
