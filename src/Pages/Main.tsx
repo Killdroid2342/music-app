@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import SavedSongs from '../components/SavedSongs';
 import Controls from '../components/Controls';
 import ImportingFiles from '../components/ImportingFiles';
-import ProgressBar from '../components/ProgressBar';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { decodeToken } from 'react-jwt';
