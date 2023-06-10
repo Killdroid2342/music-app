@@ -60,6 +60,11 @@ export default function ImportingFiles({
     console.log(e);
     const res = await instance.post('/songs/upload-song', formData, config);
     setMessage(res.data.message);
+    setSongs((prevSongs: any) => [
+      ...prevSongs,
+      { name: songName, dataUrl: res.data.dataUrl },
+    ]);
+
     setTimeout(() => {
       setMessage('');
     }, 3000);

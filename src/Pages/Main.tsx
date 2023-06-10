@@ -59,6 +59,7 @@ export default function Main(): JSX.Element {
         <ImportingFiles
           handleSongClick={handleSongClick}
           clientUsername={clientUsername}
+          setSongs={setSongs}
         />
         <div className='h-screen w-10/12 flex flex-col justify-center items-center'>
           <p className='text-2xl'>{currentSong?.name ?? 'Select Song'}</p>
