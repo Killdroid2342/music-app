@@ -11,10 +11,9 @@ router.use(bodyParser.json());
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../src/uploads/musicTMP');
+    cb(null, '../uploads/musicTMP');
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
@@ -35,6 +34,12 @@ router.post('/upload-song', upload.single('files'), async (req, res) => {
       message: 'There has been an error uploading your songs :(',
     });
   }
+});
+
+router.get('/song/:ID', (req, res) => {
+  const { ID } = req.params;
+  const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID + '.mp3');
+  res.sendFile(pathUrl);
 });
 
 module.exports = router;

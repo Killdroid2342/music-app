@@ -1,5 +1,3 @@
-import { Song } from '../Pages/Main';
-
 export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
   return (
     <div className='border border-white flex flex-col bg-neutral-700 text-center p-2'>
@@ -11,11 +9,6 @@ export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
         Log Out
       </h2>
       <h2 className='text-xl font-bold'>This is your Queue</h2>
-      <p>
-        {songs.map((song: Song, index: number) => (
-          <span key={index}>{song.name}</span>
-        ))}
-      </p>
     </div>
   );
 }
