@@ -57,7 +57,8 @@ export default function Main(): JSX.Element {
     <>
       <div className='flex flex-row'>
         <ImportingFiles
-          handleSongClick={handleSongClick}
+          songs={[]}
+          setSongs={setSongs}
           clientUsername={clientUsername}
         />
         <div className='h-screen w-10/12 flex flex-col justify-center items-center'>
