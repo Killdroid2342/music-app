@@ -9,6 +9,9 @@ export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
         Log Out
       </h2>
       <h2 className='text-xl font-bold'>This is your Queue</h2>
+      {songs.map((song: any, index: number) => (
+        <p key={index}>{song.songName}</p>
+      ))}
     </div>
   );
 }

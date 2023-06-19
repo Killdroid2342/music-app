@@ -56,10 +56,18 @@ export default function ImportingFiles({
     formData.append('songName', songName);
     formData.append('username', clientUsername);
 
-    console.log(formData);
-    console.log(e);
-    const res = await instance.post('/songs/upload-song', formData, config);
-    setMessage(res.data.message);
+    const { data } = await instance.post(
+      '/songs/upload-song',
+      formData,
+      config
+    );
+    setMessage(data.message);
+
+    if (data.message === 'You have successfully uploaded song :)') {
+      const newSong = { songName: songName };
+      setSongs((prevSongs: any[]) => [...prevSongs, newSong]);
+    }
+
     setTimeout(() => {
       setMessage('');
     }, 3000);
