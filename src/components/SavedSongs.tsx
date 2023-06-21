@@ -1,4 +1,16 @@
+import React from 'react';
+import axios from 'axios';
+
 export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
+  const handleSongClick = async (songName: string) => {
+    try {
+      const response = await axios.get(`/song/${encodeURIComponent(songName)}`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className='border border-white flex flex-col bg-neutral-700 text-center p-2'>
       <h2 className='font-bold text-lg'>Account: {clientUsername}</h2>
@@ -10,7 +22,9 @@ export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
       </h2>
       <h2 className='text-xl font-bold'>This is your Queue</h2>
       {songs.map((song: any, index: number) => (
-        <p key={index}>{song.songName}</p>
+        <p key={index} onClick={() => handleSongClick(song.songName)}>
+          {song.songName}
+        </p>
       ))}
     </div>
   );
