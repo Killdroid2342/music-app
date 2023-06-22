@@ -1,13 +1,18 @@
 import React from 'react';
 import axios from 'axios';
+const { VITE_API_URL } = import.meta.env;
 
 export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
+  const instance = axios.create({
+    baseURL: VITE_API_URL,
+  });
+
   const handleSongClick = async (songName: string) => {
     try {
-      const response = await axios.get(`/song/${encodeURIComponent(songName)}`);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+      const res = await instance.get(`/song/:${encodeURIComponent(songName)}`);
+      console.log(res);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -22,7 +27,11 @@ export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
       </h2>
       <h2 className='text-xl font-bold'>This is your Queue</h2>
       {songs.map((song: any, index: number) => (
-        <p key={index} onClick={() => handleSongClick(song.songName)}>
+        <p
+          className='border cursor-pointer'
+          key={index}
+          onClick={() => handleSongClick(song.songName)}
+        >
           {song.songName}
         </p>
       ))}
