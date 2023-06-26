@@ -55,22 +55,28 @@ export default function ImportingFiles({
     formData.append('files', file);
     formData.append('songName', songName);
     formData.append('username', clientUsername);
-
-    const { data } = await instance.post(
-      '/songs/upload-song',
-      formData,
-      config
-    );
-    setMessage(data.message);
-
-    if (data.message === 'You have successfully uploaded song :)') {
-      const newSong = { songName: songName };
-      setSongs((prevSongs: any[]) => [...prevSongs, newSong]);
+    try {
+      const { data } = await instance.post(
+        '/songs/upload-song',
+        formData,
+        config
+      );
+      console.log(data);
+      console.log(data.musicFileName);
+      const musicFileName = data.musicFileName;
+      setMessage(data.message);
+      if (data.message === 'You have successfully uploaded song :)') {
+        const newSong = { songName: songName, musicFileName: musicFileName };
+        setSongs((prevSongs: any[]) => [...prevSongs, newSong, musicFileName]);
+        console.log(songName);
+        console.log(newSong);
+      }
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
+    } catch (e) {
+      console.log(e);
     }
-
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
   };
 
   return (

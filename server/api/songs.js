@@ -27,6 +27,7 @@ router.post('/upload-song', upload.single('files'), async (req, res) => {
     uploadSongs(username, dateOfSongAdded, songName, musicFileName);
     res.send({
       message: 'You have successfully uploaded song :)',
+      musicFileName: musicFileName,
     });
   } catch (err) {
     console.log(err);
@@ -38,7 +39,7 @@ router.post('/upload-song', upload.single('files'), async (req, res) => {
 
 router.get('/song/:ID', (req, res) => {
   const { ID } = req.params;
-  const pathUrl = path.join(__dirname, './uploads/musicTMP' + ID + '.mp3');
+  const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
   res.sendFile(pathUrl);
 });
 
