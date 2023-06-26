@@ -7,10 +7,13 @@ export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
     baseURL: VITE_API_URL,
   });
 
-  const handleSongClick = async (songName: string) => {
+  const handleSongClick = async (musicFileName: string) => {
     try {
-      const res = await instance.get(`/song/:${encodeURIComponent(songName)}`);
+      const res = await instance.get(
+        `/songs/song/${encodeURIComponent(musicFileName)}`
+      );
       console.log(res);
+      console.log('song clicked');
     } catch (e) {
       console.log(e);
     }
@@ -30,7 +33,7 @@ export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
         <p
           className='border cursor-pointer'
           key={index}
-          onClick={() => handleSongClick(song.songName)}
+          onClick={() => handleSongClick(song.musicFileName)}
         >
           {song.songName}
         </p>
