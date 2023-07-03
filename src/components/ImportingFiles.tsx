@@ -33,6 +33,12 @@ export default function ImportingFiles({
     setSongName(name);
   };
 
+  const handlePlaySong = (musicData: any) => {
+    const audio = new Audio();
+    audio.src = musicData;
+    audio.play();
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -61,6 +67,13 @@ export default function ImportingFiles({
         formData,
         config
       );
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const musicData = event.target?.result;
+        console.log(musicData);
+        handlePlaySong(musicData);
+      };
+      reader.readAsDataURL(file);
       console.log(data);
       console.log(data.musicFileName);
       const musicFileName = data.musicFileName;
