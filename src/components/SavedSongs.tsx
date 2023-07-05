@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 const { VITE_API_URL } = import.meta.env;
 
@@ -7,13 +7,20 @@ export default function SavedSongs({ clientUsername, backToHome, songs }: any) {
     baseURL: VITE_API_URL,
   });
 
+  const [currentSong, setCurrentSong] = useState<HTMLAudioElement | null>(null);
+
   const handleSongClick = async (musicFileName: string) => {
+    if (currentSong) {
+      currentSong.pause();
+      currentSong.currentTime = 0;
+    }
+
     try {
-      const res = await instance.get(
-        `/songs/song/${encodeURIComponent(musicFileName)}`
+      const audio = new Audio(
+        `${VITE_API_URL}/songs/song/${encodeURIComponent(musicFileName)}`
       );
-      console.log(res);
-      console.log('song clicked');
+      setCurrentSong(audio);
+      audio.play();
     } catch (e) {
       console.log(e);
     }
