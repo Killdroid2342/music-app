@@ -4,65 +4,16 @@ import ProgressBar from './ProgressBar';
 export default function Controls({
   isPlaying,
   audioRef,
-  setIsPlaying,
   currentSong,
-  setCurrentSong,
   songs,
   progress,
+  handleVolumeChange,
+  volume,
+  handlePreviousSongClick,
+  handlePlayPauseClick,
+  handleNextSongClick,
+  handleRestartSongClick,
 }: any) {
-  const [volume, setVolume] = useState(0);
-
-  const handleRestartSongClick = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-  const handlePlayPauseClick = () => {
-    if (audioRef.current) {
-      if (audioRef.current.paused) {
-        audioRef.current.play();
-        setIsPlaying(true);
-      } else {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      }
-    }
-  };
-
-  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const volume = parseFloat(event.target.value);
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-    setVolume(volume);
-  };
-  const handlePreviousSongClick = () => {
-    if (currentSong) {
-      const currentIndex = songs.findIndex((song: any) => song === currentSong);
-      const previousIndex = (currentIndex - 1 + songs.length) % songs.length;
-      setCurrentSong(songs[previousIndex]);
-      setIsPlaying(true);
-      if (audioRef.current) {
-        audioRef.current.load();
-        audioRef.current.play();
-      }
-    }
-  };
-  const handleNextSongClick = () => {
-    if (currentSong) {
-      const currentIndex = songs.findIndex((song: any) => song === currentSong);
-      const previousIndex = (currentIndex + 1 + songs.length) % songs.length;
-      setCurrentSong(songs[previousIndex]);
-      setIsPlaying(true);
-      if (audioRef.current) {
-        audioRef.current.load();
-        audioRef.current.play();
-      }
-    }
-  };
-
   return (
     <>
       <div className='fixed bottom-0 left-0 right-0 border border-white w-full flex flex-row justify-evenly bg-neutral-700 rounded-lg'>
