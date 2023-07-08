@@ -5,8 +5,15 @@ import ImportingFiles from '../components/ImportingFiles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { decodeToken } from 'react-jwt';
+import axios from 'axios';
+const { VITE_API_URL } = import.meta.env;
 
+const instance = axios.create({
+  baseURL: VITE_API_URL,
+});
 export interface Song {
+  pause(): unknown;
+  currentTime: number;
   name: string;
   dataUrl: string;
 }
@@ -24,6 +31,7 @@ export default function Main(): JSX.Element {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState<number>(0);
   const [clientUsername, setClientUsername] = useState('');
+  const [volume, setVolume] = useState(0);
 
   const handleSongClick = (song: Song) => {
     setCurrentSong(song);
@@ -53,6 +61,79 @@ export default function Main(): JSX.Element {
     usernameJWT();
   });
 
+  const choosingSong = async (musicFileName: string) => {
+    if (currentSong) {
+      currentSong.pause();
+      currentSong.currentTime = 0;
+      console.log(currentSong);
+    }
+    console.log(currentSong);
+
+    try {
+      const audio = new Audio(
+        `${VITE_API_URL}/songs/song/${encodeURIComponent(musicFileName)}`
+      );
+      const song: Song = {
+        pause: () => audio.pause(),
+        currentTime: audio.currentTime,
+        name: musicFileName,
+        dataUrl: audio.src,
+      };
+      setCurrentSong(song);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const handleRestartSongClick = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+  const handlePlayPauseClick = () => {
+    if (audioRef.current) {
+      if (audioRef.current.paused) {
+        audioRef.current.play();
+        setIsPlaying(true);
+      } else {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
+
+  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const volume = parseFloat(event.target.value);
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+    setVolume(volume);
+  };
+  const handlePreviousSongClick = () => {
+    if (currentSong) {
+      const currentIndex = songs.findIndex((song: any) => song === currentSong);
+      const previousIndex = (currentIndex - 1 + songs.length) % songs.length;
+      setCurrentSong(songs[previousIndex]);
+      setIsPlaying(true);
+      if (audioRef.current) {
+        audioRef.current.load();
+        audioRef.current.play();
+      }
+    }
+  };
+  const handleNextSongClick = () => {
+    if (currentSong) {
+      const currentIndex = songs.findIndex((song: any) => song === currentSong);
+      const previousIndex = (currentIndex + 1 + songs.length) % songs.length;
+      setCurrentSong(songs[previousIndex]);
+      setIsPlaying(true);
+      if (audioRef.current) {
+        audioRef.current.load();
+        audioRef.current.play();
+      }
+    }
+  };
   return (
     <>
       <div className='flex flex-row'>
@@ -91,6 +172,12 @@ export default function Main(): JSX.Element {
             setCurrentSong={setCurrentSong}
             songs={songs}
             progress={progress}
+            handleVolumeChange={handleVolumeChange}
+            volume={volume}
+            handlePreviousSongClick={handlePreviousSongClick}
+            handlePlayPauseClick={handlePlayPauseClick}
+            handleNextSongClick={handleNextSongClick}
+            handleRestartSongClick={handleRestartSongClick}
           />
         </div>
 
@@ -99,6 +186,9 @@ export default function Main(): JSX.Element {
           backToHome={backToHome}
           handleSongClick={handleSongClick}
           songs={songs}
+          currentSong={currentSong}
+          setCurrentSong={setCurrentSong}
+          choosingSong={choosingSong}
         />
       </div>
     </>
