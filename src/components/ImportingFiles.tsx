@@ -55,28 +55,27 @@ export default function ImportingFiles({
     formData.append('files', file);
     formData.append('songName', songName);
     formData.append('username', clientUsername);
+
     try {
       const { data } = await instance.post(
         '/songs/upload-song',
         formData,
         config
       );
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const musicData = event.target?.result;
-        console.log(musicData);
-      };
-      reader.readAsDataURL(file);
-      console.log(data);
-      console.log(data.musicFileName);
+
       const musicFileName = data.musicFileName;
       setMessage(data.message);
+
       if (data.message === 'You have successfully uploaded song :)') {
-        const newSong = { songName: songName, musicFileName: musicFileName };
-        setSongs((prevSongs: any[]) => [...prevSongs, newSong, musicFileName]);
-        console.log(songName);
+        const newSong = {
+          songName: songName,
+          musicFileName: musicFileName,
+          dataUrl: URL.createObjectURL(file),
+        };
+        setSongs((prevSongs: any[]) => [...prevSongs, newSong]);
         console.log(newSong);
       }
+
       setTimeout(() => {
         setMessage('');
       }, 3000);
