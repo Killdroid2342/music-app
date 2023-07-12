@@ -16,6 +16,7 @@ export interface Song {
   currentTime: number;
   name: string;
   dataUrl: string;
+  songName: string;
 }
 
 window.history.pushState(null, '', window.location.href);
@@ -32,7 +33,82 @@ export default function Main(): JSX.Element {
   const [progress, setProgress] = useState<number>(0);
   const [clientUsername, setClientUsername] = useState('');
   const [volume, setVolume] = useState(0);
+  const [songName, setSongName] = useState('');
+  const [file, setFile] = useState<File | null>(null);
+  const [message, setMessage] = useState('');
 
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setFile(file);
+  };
+
+  const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
+    setSongName(name);
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    if (songName === '') {
+      alert('ENTER NAME');
+      return;
+    }
+
+    if (!file) {
+      alert('CHOOSE YOUR MP3 FILE');
+      return;
+    }
+
+    if (!file.type.startsWith('audio/')) {
+      alert('This is not an audio file. Choose an audio file');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('files', file);
+    formData.append('songName', songName);
+    formData.append('username', clientUsername);
+
+    try {
+      const { data } = await instance.post(
+        '/songs/upload-song',
+        formData,
+        config
+      );
+
+      const musicFileName = data.musicFileName;
+      console.log(musicFileName);
+      setMessage(data.message);
+
+      if (data.message === 'You have successfully uploaded song :)') {
+        const newSong = {
+          songName: songName,
+          musicFileName: musicFileName,
+          dataUrl: URL.createObjectURL(file),
+        };
+        setSongs((prevSongs: any[]) => [...prevSongs, newSong]);
+        console.log(newSong);
+        console.log(newSong.songName);
+        console.log(songName);
+      }
+
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
+    } catch (e) {
+      console.log(e);
+    }
+    console.log(currentSong);
+  };
   const handleSongClick = (song: Song) => {
     setCurrentSong(song);
     if (audioRef.current) {
@@ -74,6 +150,7 @@ export default function Main(): JSX.Element {
         `${VITE_API_URL}/songs/song/${encodeURIComponent(musicFileName)}`
       );
       const song: Song = {
+        songName: songName,
         pause: () => audio.pause(),
         currentTime: audio.currentTime,
         name: musicFileName,
@@ -121,6 +198,7 @@ export default function Main(): JSX.Element {
         audioRef.current.play();
       }
     }
+    console.log(currentSong);
   };
   const handleNextSongClick = () => {
     if (currentSong) {
@@ -133,7 +211,10 @@ export default function Main(): JSX.Element {
         audioRef.current.play();
       }
     }
+    console.log(currentSong);
   };
+
+  // submitting form
   return (
     <>
       <div className='flex flex-row'>
@@ -141,10 +222,16 @@ export default function Main(): JSX.Element {
           songs={[]}
           setSongs={setSongs}
           clientUsername={clientUsername}
+          songName={songName}
+          handleNameInput={handleNameInput}
+          handleFileUpload={handleFileUpload}
+          handleSubmit={handleSubmit}
+          message={message}
         />
         <div className='h-screen w-10/12 flex flex-col justify-center items-center'>
-          <p className='text-2xl'>{currentSong?.name ?? 'Select Song'}</p>
-
+          <p className='text-2xl'>
+            {currentSong ? currentSong.songName : 'Select Song'}
+          </p>
           {currentSong?.dataUrl ? (
             <audio
               ref={audioRef}
