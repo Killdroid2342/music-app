@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export default function SavedSongs({
   clientUsername,
-  backToHome,
   songs,
   choosingSong,
 }: any) {
+  const navigate = useNavigate();
+  const backToHome = () => {
+    Cookies.remove('UserjwtToken');
+    navigate('/');
+  };
   return (
     <div className='border border-white flex flex-col bg-neutral-700 text-center p-2'>
       <h2 className='font-bold text-lg'>Account: {clientUsername}</h2>
