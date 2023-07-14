@@ -38,7 +38,6 @@ router.post('/login-user', async (req, res) => {
       (await isUserExists(username)) !== false &&
       (await comparePassswords(clientpassword, password)) == true
     ) {
-      console.log(jwtToken());
       res.send({
         message: 'Correct details. Welcome',
         token: jwtToken(username),

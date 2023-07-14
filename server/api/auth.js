@@ -7,9 +7,12 @@ router.use(bodyParser.json());
 
 router.post('/validate-token', async (req, res) => {
   const { token } = req.body;
-  if ((await verifyToken(token)) !== false) {
+  let tokenRes = verifyToken(token);
+
+  if ((await tokenRes) !== false) {
     res.send({
       message: 'correct token',
+      isAuth: token,
     });
   } else {
     res.send({
