@@ -58,13 +58,11 @@ export default function Home() {
       clientpassword: loginData.password,
     });
     Cookies.set('UserjwtToken', res.data.token);
-    console.log(res.data.token);
 
     setModal(res.data.message);
     setTimeout(() => {
       setModal(false);
     }, 1200);
-    console.log(res);
   }
 
   async function handleAuth() {
@@ -75,7 +73,6 @@ export default function Home() {
       setTimeout(() => {
         navigate('/main');
       }, 2000);
-      console.log(res);
     } else {
       return;
     }

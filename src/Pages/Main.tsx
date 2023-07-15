@@ -92,7 +92,9 @@ export default function Main(): JSX.Element {
       console.log(e);
     }
   };
-
+  const removeSong = (index: number) => {
+    setSongs((prevSongs) => prevSongs.filter((_, i) => i !== index));
+  };
   return (
     <>
       <div className='flex flex-row'>
@@ -131,7 +133,6 @@ export default function Main(): JSX.Element {
               <source src={currentSong.dataUrl} type='audio/mpeg' />
             </audio>
           ) : null}
-
           <Controls
             audioRef={audioRef}
             isPlaying={isPlaying}
@@ -151,6 +152,7 @@ export default function Main(): JSX.Element {
           currentSong={currentSong}
           setCurrentSong={setCurrentSong}
           choosingSong={choosingSong}
+          removeSong={removeSong}
         />
       </div>
     </>

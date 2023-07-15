@@ -5,14 +5,12 @@ const { VITE_API_URL } = import.meta.env;
 export default function ImportingFiles({
   songName,
   handleNameInput,
-
   message,
   file,
   setFile,
   clientUsername,
   setMessage,
   setSongs,
-  currentSong,
   config,
 }: any) {
   const instance = axios.create({
@@ -49,7 +47,6 @@ export default function ImportingFiles({
       );
 
       const musicFileName = data.musicFileName;
-      console.log(musicFileName);
       setMessage(data.message);
 
       if (data.message === 'You have successfully uploaded song :)') {
@@ -59,9 +56,6 @@ export default function ImportingFiles({
           dataUrl: URL.createObjectURL(file),
         };
         setSongs((prevSongs: any[]) => [...prevSongs, newSong]);
-        console.log(newSong);
-        console.log(newSong.songName);
-        console.log(songName);
       }
 
       setTimeout(() => {
@@ -70,7 +64,6 @@ export default function ImportingFiles({
     } catch (e) {
       console.log(e);
     }
-    console.log(currentSong);
   };
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

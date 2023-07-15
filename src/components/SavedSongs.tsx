@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
@@ -7,6 +5,7 @@ export default function SavedSongs({
   clientUsername,
   songs,
   choosingSong,
+  removeSong,
 }: any) {
   const navigate = useNavigate();
   const backToHome = () => {
@@ -24,13 +23,20 @@ export default function SavedSongs({
       </h2>
       <h2 className='text-xl font-bold'>This is your Queue</h2>
       {songs.map((song: any, index: number) => (
-        <p
-          className='border cursor-pointer'
-          key={index}
-          onClick={() => choosingSong(song.musicFileName)}
-        >
-          {song.songName}
-        </p>
+        <div className='flex justify-center items-center mt-5' key={index}>
+          <p
+            className='border cursor-pointer p-2 text-center'
+            onClick={() => choosingSong(song.musicFileName)}
+          >
+            {song.songName}
+          </p>
+          <p
+            className='border cursor-pointer p-2 ml-2 text-center'
+            onClick={() => removeSong(index)}
+          >
+            x
+          </p>
+        </div>
       ))}
     </div>
   );
