@@ -3,6 +3,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 require('dotenv').config();
 const { uploadSongs } = require('../modal/song');
@@ -35,6 +36,20 @@ router.post('/upload-song', upload.single('files'), async (req, res) => {
       message: 'There has been an error uploading your songs :(',
     });
   }
+});
+
+router.delete('/song/:ID', (req, res) => {
+  const { ID } = req.params;
+  const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
+
+  fs.unlink(pathUrl, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Error deleting song');
+    } else {
+      res.send('Song deleted successfully');
+    }
+  });
 });
 
 router.get('/song/:ID', (req, res) => {
