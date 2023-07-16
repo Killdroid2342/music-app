@@ -17,6 +17,7 @@ export interface Song {
   name: string;
   dataUrl: string;
   songName: string;
+  musicFileName: string;
 }
 
 window.history.pushState(null, '', window.location.href);
@@ -86,14 +87,28 @@ export default function Main(): JSX.Element {
         currentTime: audio.currentTime,
         name: musicFileName,
         dataUrl: audio.src,
+        musicFileName: '',
       };
       setCurrentSong(song);
     } catch (e) {
       console.log(e);
     }
   };
-  const removeSong = (index: number) => {
-    setSongs((prevSongs) => prevSongs.filter((_, i) => i !== index));
+
+  const removeSong = async (index: number) => {
+    const songToRemove = songs[index];
+    if (songToRemove) {
+      try {
+        await axios.delete(
+          `${VITE_API_URL}/songs/song/${encodeURIComponent(
+            songToRemove.musicFileName
+          )}`
+        );
+        setSongs((prevSongs) => prevSongs.filter((_, i) => i !== index));
+      } catch (e) {
+        console.log(e);
+      }
+    } else return;
   };
   return (
     <>
