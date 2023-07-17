@@ -13,7 +13,14 @@ const uploadSongs = async (username, date_added, songname, uuid) => {
     [username, date_added, songname, uuid]
   );
 };
+const getSongs = async (username) => {
+  const [rows, fields] = await conn
+    .promise()
+    .query('SELECT * FROM songs WHERE username = ?', [username]);
+  return rows;
+};
 
 module.exports = {
   uploadSongs,
+  getSongs,
 };
