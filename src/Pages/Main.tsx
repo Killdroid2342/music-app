@@ -34,7 +34,7 @@ export default function Main(): JSX.Element {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState<number>(0);
   const [clientUsername, setClientUsername] = useState('');
-  const [volume, setVolume] = useState(0);
+  const [volume, setVolume] = useState(1);
   const [songName, setSongName] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
