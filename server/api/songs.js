@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 
 require('dotenv').config();
-const { uploadSongs } = require('../modal/song');
+const { uploadSongs, getSongs, deleteSong } = require('../modal/song');
 
 router.use(bodyParser.json());
 
@@ -37,7 +37,13 @@ router.post('/upload-song', upload.single('files'), async (req, res) => {
     });
   }
 });
+router.post('/get-songs', async (req, res) => {
+  const { username } = req.body;
+  console.log(username);
 
+  const results = await getSongs(username);
+  res.send(results);
+});
 router.delete('/song/:ID', (req, res) => {
   const { ID } = req.params;
   const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);

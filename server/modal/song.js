@@ -17,6 +17,7 @@ const getSongs = async (username) => {
   const [rows, fields] = await conn
     .promise()
     .query('SELECT * FROM songs WHERE username = ?', [username]);
+  console.log(rows);
   return rows;
 };
 
