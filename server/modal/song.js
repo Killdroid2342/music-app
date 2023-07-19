@@ -21,7 +21,18 @@ const getSongs = async (username) => {
   return rows;
 };
 
+const deleteSong = async (uuid) => {
+  try {
+    await conn.promise().query('DELETE FROM songs WHERE UUID = ?', [uuid]);
+    console.log('Song deleted from the database.');
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
+
 module.exports = {
   uploadSongs,
   getSongs,
+  deleteSong,
 };
