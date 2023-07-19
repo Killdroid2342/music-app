@@ -44,16 +44,22 @@ router.post('/get-songs', async (req, res) => {
   const results = await getSongs(username);
   res.send(results);
 });
-router.delete('/song/:ID', (req, res) => {
+router.delete('/song/:ID', async (req, res) => {
   const { ID } = req.params;
   const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
 
-  fs.unlink(pathUrl, (err) => {
-    if (err) {
-      console.log(err);
+  fs.unlink(pathUrl, async (e) => {
+    if (e) {
+      console.log(e);
       res.status(500).send('Error deleting song');
     } else {
-      res.send('Song deleted successfully');
+      try {
+        await deleteSong(ID);
+        res.send('Song deleted successfully');
+      } catch (e) {
+        console.log(e);
+        res.status(500).send('Error deleting song from the database');
+      }
     }
   });
 });
