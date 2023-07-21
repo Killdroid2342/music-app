@@ -37,20 +37,19 @@ router.post('/upload-song', upload.single('files'), async (req, res) => {
     });
   }
 });
-router.post('/get-songs', async (req, res) => {
-  const { username } = req.body;
-  console.log(username);
 
-  const results = await getSongs(username);
+router.post('/get-songs', async (req, res) => {
+  const { clientUsername } = req.body;
+  const results = await getSongs(clientUsername);
   res.send(results);
 });
+
 router.delete('/song/:ID', async (req, res) => {
   const { ID } = req.params;
   const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
 
   fs.unlink(pathUrl, async (e) => {
     if (e) {
-      console.log(e);
       res.status(500).send('Error deleting song');
     } else {
       try {

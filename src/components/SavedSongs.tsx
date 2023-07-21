@@ -1,6 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import axios from 'axios';
+import { useEffect } from 'react';
+const { VITE_API_URL } = import.meta.env;
 
+const instance = axios.create({
+  baseURL: VITE_API_URL,
+});
 export default function SavedSongs({
   clientUsername,
   songs,
@@ -12,6 +18,18 @@ export default function SavedSongs({
     Cookies.remove('UserjwtToken');
     navigate('/');
   };
+  const gettingSongs = async (username: any) => {
+    if (username) {
+      const res = await instance.post(`songs/get-songs`, {
+        clientUsername: username,
+      });
+      console.log(res);
+    }
+  };
+
+  useEffect(() => {
+    gettingSongs(clientUsername);
+  }, [clientUsername]);
   return (
     <div className='border border-white flex flex-col bg-neutral-700 text-center p-2'>
       <h2 className='font-bold text-lg'>Account: {clientUsername}</h2>

@@ -99,10 +99,8 @@ export default function Main(): JSX.Element {
     const songToRemove = songs[index];
     if (songToRemove) {
       try {
-        await axios.delete(
-          `${VITE_API_URL}/songs/song/${encodeURIComponent(
-            songToRemove.musicFileName
-          )}`
+        await instance.delete(
+          `/songs/song/${encodeURIComponent(songToRemove.musicFileName)}`
         );
         setSongs((prevSongs) => prevSongs.filter((_, i) => i !== index));
       } catch (e) {
