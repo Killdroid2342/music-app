@@ -16,8 +16,8 @@ export interface Song {
   currentTime: number;
   name: string;
   dataUrl: string;
-  songName: string;
-  musicFileName: string;
+  songname: string;
+  UUID: string;
 }
 
 window.history.pushState(null, '', window.location.href);
@@ -35,7 +35,7 @@ export default function Main(): JSX.Element {
   const [progress, setProgress] = useState<number>(0);
   const [clientUsername, setClientUsername] = useState('');
   const [volume, setVolume] = useState(1);
-  const [songName, setSongName] = useState('');
+  const [songname, setSongName] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
 
@@ -71,7 +71,7 @@ export default function Main(): JSX.Element {
     usernameJWT();
   });
 
-  const choosingSong = async (musicFileName: string) => {
+  const choosingSong = async (UUID: string) => {
     if (currentSong) {
       currentSong.pause();
       currentSong.currentTime = 0;
@@ -79,15 +79,15 @@ export default function Main(): JSX.Element {
 
     try {
       const audio = new Audio(
-        `${VITE_API_URL}/songs/song/${encodeURIComponent(musicFileName)}`
+        `${VITE_API_URL}/songs/song/${encodeURIComponent(UUID)}`
       );
       const song: Song = {
-        songName: songName,
+        songname: songname,
         pause: () => audio.pause(),
         currentTime: audio.currentTime,
-        name: musicFileName,
+        name: UUID,
         dataUrl: audio.src,
-        musicFileName: '',
+        UUID: '',
       };
       setCurrentSong(song);
     } catch (e) {
@@ -100,7 +100,7 @@ export default function Main(): JSX.Element {
     if (songToRemove) {
       try {
         await instance.delete(
-          `/songs/song/${encodeURIComponent(songToRemove.musicFileName)}`
+          `/songs/song/${encodeURIComponent(songToRemove.UUID)}`
         );
         setSongs((prevSongs) => prevSongs.filter((_, i) => i !== index));
       } catch (e) {
@@ -115,7 +115,7 @@ export default function Main(): JSX.Element {
           songs={[]}
           setSongs={setSongs}
           clientUsername={clientUsername}
-          songName={songName}
+          songname={songname}
           handleNameInput={handleNameInput}
           message={message}
           file={file}
@@ -126,7 +126,7 @@ export default function Main(): JSX.Element {
         />
         <div className='h-screen w-10/12 flex flex-col justify-center items-center'>
           <p className='text-2xl'>
-            {currentSong ? currentSong.songName : 'Select Song'}
+            {currentSong ? currentSong.songname : 'Select Song'}
           </p>
           {currentSong?.dataUrl ? (
             <audio
@@ -166,6 +166,7 @@ export default function Main(): JSX.Element {
           setCurrentSong={setCurrentSong}
           choosingSong={choosingSong}
           removeSong={removeSong}
+          setSongs={setSongs}
         />
       </div>
     </>

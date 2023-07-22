@@ -3,7 +3,7 @@ import axios from 'axios';
 const { VITE_API_URL } = import.meta.env;
 
 export default function ImportingFiles({
-  songName,
+  songname,
   handleNameInput,
   message,
   file,
@@ -19,7 +19,7 @@ export default function ImportingFiles({
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (songName === '') {
+    if (songname === '') {
       alert('ENTER NAME');
       return;
     }
@@ -36,7 +36,7 @@ export default function ImportingFiles({
 
     const formData = new FormData();
     formData.append('files', file);
-    formData.append('songName', songName);
+    formData.append('songname', songname);
     formData.append('username', clientUsername);
 
     try {
@@ -46,13 +46,13 @@ export default function ImportingFiles({
         config
       );
 
-      const musicFileName = data.musicFileName;
+      const UUID = data.UUID;
       setMessage(data.message);
 
       if (data.message === 'You have successfully uploaded song :)') {
         const newSong = {
-          songName: songName,
-          musicFileName: musicFileName,
+          songname: songname,
+          UUID: UUID,
           dataUrl: URL.createObjectURL(file),
         };
         setSongs((prevSongs: any[]) => [...prevSongs, newSong]);
@@ -78,7 +78,7 @@ export default function ImportingFiles({
         <input
           type='text'
           placeholder='Song Name'
-          value={songName}
+          value={songname}
           onChange={handleNameInput}
           className='text-center border-2 border-white px-3 py-2 rounded-lg mb-2 cursor-pointer flex items-center justify-center bg-blur bg-black/80'
         />

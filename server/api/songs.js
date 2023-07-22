@@ -22,13 +22,13 @@ const upload = multer({ storage: storage });
 
 router.post('/upload-song', upload.single('files'), async (req, res) => {
   try {
-    const { username, songName } = req.body;
-    const musicFileName = req.file.filename;
+    const { username, songname } = req.body;
+    const UUID = req.file.filename;
     const dateOfSongAdded = new Date();
-    uploadSongs(username, dateOfSongAdded, songName, musicFileName);
+    uploadSongs(username, dateOfSongAdded, songname, UUID);
     res.send({
       message: 'You have successfully uploaded song :)',
-      musicFileName: musicFileName,
+      UUID: UUID,
     });
   } catch (err) {
     console.log(err);
