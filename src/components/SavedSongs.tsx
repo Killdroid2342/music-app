@@ -12,18 +12,23 @@ export default function SavedSongs({
   songs,
   choosingSong,
   removeSong,
+  setSongs,
 }: any) {
   const navigate = useNavigate();
   const backToHome = () => {
     Cookies.remove('UserjwtToken');
     navigate('/');
   };
-  const gettingSongs = async (username: any) => {
+  const gettingSongs = async (username: string) => {
     if (username) {
       const res = await instance.post(`songs/get-songs`, {
         clientUsername: username,
       });
       console.log(res);
+      const userSongs = res.data.filter(
+        (song: any) => song.username === username
+      );
+      setSongs(userSongs);
     }
   };
 
@@ -44,9 +49,9 @@ export default function SavedSongs({
         <div className='flex justify-center items-center mt-5' key={index}>
           <p
             className='border cursor-pointer p-2 text-center'
-            onClick={() => choosingSong(song.musicFileName)}
+            onClick={() => choosingSong(song.UUID)}
           >
-            {song.songName}
+            {song.songname}
           </p>
           <p
             className='border cursor-pointer p-2 ml-2 text-center'
