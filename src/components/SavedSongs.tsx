@@ -2,7 +2,27 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { Song } from '../Pages/Main';
 const { VITE_API_URL } = import.meta.env;
+
+const reformatSongs = (songs: any): Song[] => {
+  let formattedSongs: Song[] = songs.map((song: any) => {
+    const audio = new Audio(
+      `${VITE_API_URL}/songs/song/${encodeURIComponent(song.UUID)}`
+    );
+
+    return {
+      songname: song.songname,
+      pause: audio.pause,
+      currentTime: audio.currentTime,
+      name: song.UUID,
+      dataUrl: audio.src,
+      UUID: song.ID,
+    } as Song;
+  });
+
+  return formattedSongs;
+};
 
 const instance = axios.create({
   baseURL: VITE_API_URL,
@@ -24,10 +44,10 @@ export default function SavedSongs({
       const res = await instance.post(`songs/get-songs`, {
         clientUsername: username,
       });
-      console.log(res);
-      const userSongs = res.data.filter(
+      let userSongs = res.data.filter(
         (song: any) => song.username === username
       );
+      userSongs = reformatSongs(userSongs);
       setSongs(userSongs);
     }
   };
