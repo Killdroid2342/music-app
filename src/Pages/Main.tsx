@@ -50,14 +50,6 @@ export default function Main(): JSX.Element {
     setSongName(name);
   };
 
-  const handleSongClick = (song: Song) => {
-    setCurrentSong(song);
-    if (audioRef.current) {
-      audioRef.current.load();
-      audioRef.current.play();
-    }
-  };
-
   const usernameJWT = () => {
     const getJWT = Cookies.get('UserjwtToken');
     if (getJWT) {
@@ -72,24 +64,14 @@ export default function Main(): JSX.Element {
   });
 
   const choosingSong = async (UUID: string) => {
-    if (currentSong) {
-      currentSong.pause();
-      currentSong.currentTime = 0;
-    }
-
     try {
-      const audio = new Audio(
-        `${VITE_API_URL}/songs/song/${encodeURIComponent(UUID)}`
-      );
-      const song: Song = {
-        songname: songname,
-        pause: () => audio.pause(),
-        currentTime: audio.currentTime,
-        name: UUID,
-        dataUrl: audio.src,
-        UUID: '',
-      };
-      setCurrentSong(song);
+      const chosenSong = songs.find((song: Song) => {
+        return UUID === song.UUID;
+      });
+      if (!chosenSong) {
+        throw new Error('No song found');
+      }
+      setCurrentSong(chosenSong);
     } catch (e) {
       console.log(e);
     }
@@ -100,7 +82,7 @@ export default function Main(): JSX.Element {
     if (songToRemove) {
       try {
         await instance.delete(
-          `/songs/song/${encodeURIComponent(songToRemove.UUID)}`
+          `/songs/song/${encodeURIComponent(songToRemove.name)}`
         );
         setSongs((prevSongs) => prevSongs.filter((_, i) => i !== index));
       } catch (e) {
@@ -160,7 +142,6 @@ export default function Main(): JSX.Element {
         </div>
         <SavedSongs
           clientUsername={clientUsername}
-          handleSongClick={handleSongClick}
           songs={songs}
           currentSong={currentSong}
           setCurrentSong={setCurrentSong}
