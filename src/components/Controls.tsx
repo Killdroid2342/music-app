@@ -1,5 +1,6 @@
 import React from 'react';
 import ProgressBar from './ProgressBar';
+import { Song } from '../Pages/Main';
 
 export default function Controls({
   isPlaying,
@@ -40,29 +41,44 @@ export default function Controls({
   };
   const handlePreviousSongClick = () => {
     if (currentSong) {
-      const currentIndex = songs.findIndex((song: any) => song === currentSong);
-      const previousIndex = (currentIndex - 1 + songs.length) % songs.length;
-      setCurrentSong(songs[previousIndex]);
-      setIsPlaying(true);
-      if (audioRef.current) {
-        audioRef.current.load();
-        audioRef.current.play();
+      let currentIndex = -1;
+      songs.forEach((song: Song, i: number) => {
+        if (song.UUID === currentSong.UUID) {
+          currentIndex = i;
+        }
+      });
+
+      if (currentIndex !== -1) {
+        const previousIndex = (currentIndex - 1 + songs.length) % songs.length;
+
+        setCurrentSong(songs[previousIndex]);
+        setIsPlaying(true);
+        if (audioRef.current) {
+          audioRef.current.load();
+          audioRef.current.play();
+        }
       }
     }
-    console.log(currentSong);
   };
   const handleNextSongClick = () => {
     if (currentSong) {
-      const currentIndex = songs.findIndex((song: any) => song === currentSong);
-      const previousIndex = (currentIndex + 1 + songs.length) % songs.length;
-      setCurrentSong(songs[previousIndex]);
-      setIsPlaying(true);
-      if (audioRef.current) {
-        audioRef.current.load();
-        audioRef.current.play();
+      let currentIndex = -1;
+      songs.forEach((song: Song, i: number) => {
+        if (song.UUID === currentSong.UUID) {
+          currentIndex = i;
+        }
+      });
+      if (currentIndex !== -1) {
+        const previousIndex = (currentIndex + 1 + songs.length) % songs.length;
+
+        setCurrentSong(songs[previousIndex]);
+        setIsPlaying(true);
+        if (audioRef.current) {
+          audioRef.current.load();
+          audioRef.current.play();
+        }
       }
     }
-    console.log(currentSong);
   };
   return (
     <>
