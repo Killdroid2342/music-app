@@ -33,6 +33,10 @@ const createUser = async (username, password) => {
   ]);
 };
 
+const deleteUser = async (username) => {
+  conn.query('DELETE FROM users WHERE username = ?', [username]);
+};
+
 async function comparePassswords(passwords, hash) {
   return bcrypt.compareSync(passwords, hash);
 }
@@ -42,4 +46,5 @@ module.exports = {
   isUserExists,
   hashPassword,
   comparePassswords,
+  deleteUser,
 };

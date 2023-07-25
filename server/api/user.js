@@ -8,6 +8,7 @@ const {
   isUserExists,
   hashPassword,
   comparePassswords,
+  deleteUser,
 } = require('../modal/user');
 
 const { jwtToken } = require('../modal/token');
@@ -49,6 +50,21 @@ router.post('/login-user', async (req, res) => {
     }
   } catch (err) {
     console.log(err);
+  }
+});
+
+router.post('/delete-user', async (req, res) => {
+  const { username } = req.body;
+  try {
+    await deleteUser(username);
+    res.send({
+      message: 'User account deleted successfully',
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message: 'An error occurred while deleting the user account',
+    });
   }
 });
 

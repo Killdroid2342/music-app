@@ -51,6 +51,14 @@ export default function SavedSongs({
       setSongs(userSongs);
     }
   };
+  const deleteAccount = async () => {
+    try {
+      await instance.post('/user/delete-user', { username: clientUsername });
+      backToHome();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     gettingSongs(clientUsername);
@@ -58,12 +66,20 @@ export default function SavedSongs({
   return (
     <div className='border border-white flex flex-col bg-neutral-700 text-center p-2'>
       <h2 className='font-bold text-lg'>Account: {clientUsername}</h2>
-      <h2
-        onClick={backToHome}
-        className='border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'
-      >
-        Log Out
-      </h2>
+      <div className='flex '>
+        <p
+          onClick={backToHome}
+          className='border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'
+        >
+          Log Out
+        </p>
+        <p
+          onClick={deleteAccount}
+          className='border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'
+        >
+          Delete User
+        </p>
+      </div>
       <h2 className='text-xl font-bold'>This is your Queue</h2>
       {songs.map((song: any, index: number) => (
         <div className='flex justify-center items-center mt-5' key={index}>
