@@ -12,7 +12,7 @@ const conn = mysql.createConnection({
 const isUserExists = async (username) => {
   const res = conn
     .promise()
-    .query('SELECT * FROM users WHERE username = ?', [username])
+    .query('SELECT * FROM musicplayer_users WHERE username = ?', [username])
     .then(([rows, fields]) => {
       if (rows.length > 0) {
         return rows[0];
@@ -27,14 +27,14 @@ const hashPassword = async (password, saltRounds) => {
   return res;
 };
 const createUser = async (username, password) => {
-  conn.query('INSERT INTO users (username, password) VALUES (?,?)', [
-    username,
-    password,
-  ]);
+  conn.query(
+    'INSERT INTO musicplayer_users (username, password) VALUES (?,?)',
+    [username, password]
+  );
 };
 
 const deleteUser = async (username) => {
-  conn.query('DELETE FROM users WHERE username = ?', [username]);
+  conn.query('DELETE FROM musicplayer_users WHERE username = ?', [username]);
 };
 
 async function comparePassswords(passwords, hash) {
