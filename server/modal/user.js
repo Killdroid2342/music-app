@@ -1,15 +1,10 @@
-const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const { getDbConn } = require('../util');
+
 require('dotenv').config();
 
-const conn = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'musicplayer',
-});
 const isUserExists = async (username) => {
+  const conn = getDbConn();
   const res = conn
     .promise()
     .query('SELECT * FROM musicplayer_users WHERE username = ?', [username])
@@ -20,6 +15,7 @@ const isUserExists = async (username) => {
         return false;
       }
     });
+  conn.end();
   return res;
 };
 const hashPassword = async (password, saltRounds) => {
@@ -27,14 +23,18 @@ const hashPassword = async (password, saltRounds) => {
   return res;
 };
 const createUser = async (username, password) => {
+  const conn = getDbConn();
   conn.query(
     'INSERT INTO musicplayer_users (username, password) VALUES (?,?)',
     [username, password]
   );
+  conn.end();
 };
 
 const deleteUser = async (username) => {
+  const conn = getDbConn();
   conn.query('DELETE FROM musicplayer_users WHERE username = ?', [username]);
+  conn.end();
 };
 
 async function comparePassswords(passwords, hash) {
