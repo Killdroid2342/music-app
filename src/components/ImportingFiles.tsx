@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 const { VITE_API_URL } = import.meta.env;
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ImportingFiles({
   songname,
@@ -16,9 +17,11 @@ export default function ImportingFiles({
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
+    const UUID = uuidv4();
+    console.log('new UUID', UUID);
     if (songname === '') {
       alert('ENTER NAME');
       return;
@@ -38,7 +41,8 @@ export default function ImportingFiles({
     formData.append('files', file);
     formData.append('songname', songname);
     formData.append('username', clientUsername);
-
+    formData.append('UUID', UUID);
+    console.log(formData);
     try {
       const { data } = await instance.post(
         '/songs/upload-song',
@@ -46,7 +50,7 @@ export default function ImportingFiles({
         config
       );
 
-      const UUID = data.UUID;
+      console.log(data);
       setMessage(data.message);
 
       if (data.message === 'You have successfully uploaded song :)') {
@@ -55,7 +59,9 @@ export default function ImportingFiles({
           UUID: UUID,
           dataUrl: URL.createObjectURL(file),
         };
+        console.log(newSong.dataUrl);
         setSongs((prevSongs: any[]) => [...prevSongs, newSong]);
+        console.log(newSong);
       }
 
       setTimeout(() => {
