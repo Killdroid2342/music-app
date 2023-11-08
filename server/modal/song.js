@@ -1,4 +1,4 @@
-const { getDbConn } = require('../util');
+const { getDbConn, s3 } = require('../util');
 require('dotenv').config();
 
 const uploadSongs = async (username, date_added, songname, uuid) => {
