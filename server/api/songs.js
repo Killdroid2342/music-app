@@ -6,16 +6,11 @@ const path = require('path');
 const fs = require('fs');
 const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
-
+const { s3 } = require('../util');
 require('dotenv').config();
 const { uploadSongs, getSongs, deleteSong } = require('../modal/song');
 
 router.use(bodyParser.json());
-
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
 
 const upload = multer({
   storage: multerS3({
@@ -55,13 +50,22 @@ router.post('/upload-song', upload.single('files'), async (req, res) => {
 
 router.post('/get-songs', async (req, res) => {
   const { clientUsername } = req.body;
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+  };
+  s3.listObjects(params, function (err, data) {
+    if (err) throw err;
+    console.log(data);
+  });
+  console.log(params);
   const results = await getSongs(clientUsername);
   res.send(results);
 });
 
 router.get('/song/:ID', (req, res) => {
   const { ID } = req.params;
-  const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
+  const pathUrl = path.join(__dirname, process.env.AWS_BUCKET_NAME + ID);
+  console.log(__dirname);
   res.sendFile(pathUrl);
 });
 
