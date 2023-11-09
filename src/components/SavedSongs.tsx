@@ -10,12 +10,12 @@ const reformatSongs = (songs: any): Song[] => {
     const audio = new Audio(
       `${VITE_API_URL}/songs/song/${encodeURIComponent(song.UUID)}`
     );
-
+    console.log(song.ID, 'THIS IS SONG ID');
+    console.log(song.UUID, 'THIS IS SONG NAME');
     return {
       songname: song.songname,
       pause: audio.pause,
       currentTime: audio.currentTime,
-      name: song.UUID,
       dataUrl: audio.src,
       UUID: song.ID,
     } as Song;
@@ -59,7 +59,8 @@ export default function SavedSongs({
       console.error(error);
     }
   };
-
+  console.log(songs);
+  console.log(songs.UUID, 'THIS IS NAME');
   useEffect(() => {
     gettingSongs(clientUsername);
   }, [clientUsername]);

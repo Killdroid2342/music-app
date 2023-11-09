@@ -13,11 +13,12 @@ export default function ImportingFiles({
   setMessage,
   setSongs,
   config,
+  songs,
 }: any) {
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
-
+  console.log(songs);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const UUID = uuidv4();
@@ -42,6 +43,7 @@ export default function ImportingFiles({
     formData.append('songname', songname);
     formData.append('username', clientUsername);
     formData.append('UUID', UUID);
+
     console.log(formData);
     try {
       const { data } = await instance.post(
@@ -49,8 +51,8 @@ export default function ImportingFiles({
         formData,
         config
       );
-
       console.log(data);
+
       setMessage(data.message);
 
       if (data.message === 'You have successfully uploaded song :)') {

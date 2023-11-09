@@ -14,7 +14,6 @@ const instance = axios.create({
 export interface Song {
   pause(): unknown;
   currentTime: number;
-  name: string;
   dataUrl: string;
   songname: string;
   UUID: string;
@@ -80,9 +79,10 @@ export default function Main(): JSX.Element {
   const removeSong = async (index: number) => {
     const songToRemove = songs[index];
     if (songToRemove) {
+      console.log(songToRemove);
       try {
         await instance.delete(
-          `/songs/song/${encodeURIComponent(songToRemove.name)}`
+          `/songs/song/${encodeURIComponent(songToRemove.UUID)}`
         );
         setSongs((prevSongs) => prevSongs.filter((_, i) => i !== index));
       } catch (e) {
