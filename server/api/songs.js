@@ -29,30 +29,14 @@ router.post('/upload-song', upload.single('files'), async (req, res) => {
     console.log(UUID, 'make this the name in the S3 bucket');
 
     const dateOfSongAdded = new Date();
-
-    // Rename the uploaded file with the UUID as its name in the S3 bucket
-    const params = {
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: UUID,
-      Body: req.file.buffer,
-    };
-
-    s3.putObject(params, function (err, data) {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error uploading to S3');
-      } else {
-        // Save the song information in the database
-        uploadSongs(username, dateOfSongAdded, songname, UUID);
-        res.send({
-          message: 'You have successfully uploaded song :)',
-          UUID: UUID,
-        });
-      }
+    uploadSongs(username, dateOfSongAdded, songname, UUID);
+    res.send({
+      message: 'You have successfully uploaded song :)',
+      UUID: UUID,
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send('There has been an error uploading your songs :(');
+    res.send('There has been an error uploading your songs :(');
   }
 });
 
