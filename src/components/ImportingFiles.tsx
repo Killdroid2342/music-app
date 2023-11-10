@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 const { VITE_API_URL } = import.meta.env;
-import { v4 as uuidv4 } from 'uuid';
 
 export default function ImportingFiles({
   songname,
@@ -21,7 +20,8 @@ export default function ImportingFiles({
   console.log(songs);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const UUID = uuidv4();
+    const UUID = Date.now().toString();
+
     console.log('new UUID', UUID);
     if (songname === '') {
       alert('ENTER NAME');
@@ -51,7 +51,8 @@ export default function ImportingFiles({
         formData,
         config
       );
-      console.log(data);
+      console.log(config, 'THIS IS CONFIG');
+      console.log(data, 'THIS IS DATA');
 
       setMessage(data.message);
 
