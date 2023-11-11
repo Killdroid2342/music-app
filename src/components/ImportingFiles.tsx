@@ -20,9 +20,7 @@ export default function ImportingFiles({
   console.log(songs);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const UUID = Date.now().toString();
 
-    console.log('new UUID', UUID);
     if (songname === '') {
       alert('ENTER NAME');
       return;
@@ -42,7 +40,6 @@ export default function ImportingFiles({
     formData.append('files', file);
     formData.append('songname', songname);
     formData.append('username', clientUsername);
-    formData.append('UUID', UUID);
 
     console.log(formData);
     try {
@@ -59,7 +56,7 @@ export default function ImportingFiles({
       if (data.message === 'You have successfully uploaded song :)') {
         const newSong = {
           songname: songname,
-          UUID: UUID,
+
           dataUrl: URL.createObjectURL(file),
         };
         console.log(newSong.dataUrl);

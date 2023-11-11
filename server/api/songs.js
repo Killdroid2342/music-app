@@ -9,6 +9,7 @@ require('dotenv').config();
 const { uploadSongs, getSongs, deleteSong } = require('../modal/song');
 const { s3 } = require('../util');
 require('aws-sdk/lib/maintenance_mode_message').suppress = true;
+const { v4: uuidv4 } = require('uuid');
 
 router.use(bodyParser.json());
 const upload = multer({
@@ -20,14 +21,20 @@ const upload = multer({
       console.log(file.fieldname, 'THIS IS FIELD NAME');
       console.log(file, 'THIS IS FILE');
     },
+    Key: function (req, file, cb) {
+      let UUID = uuidv4();
+      console.log(UUID, 'THIS IS UUID');
+      cb(null, UUID);
+    },
   }),
 });
 
 router.post('/upload-song', upload.single('files'), async (req, res) => {
   try {
-    const { username, songname, UUID } = req.body;
+    const { username, songname } = req.body;
+    const UUID = req.file.key;
     console.log(UUID, 'make this the name in the S3 bucket');
-
+    console.log(req.file.key, 'this is req.file');
     const dateOfSongAdded = new Date();
     uploadSongs(username, dateOfSongAdded, songname, UUID);
     res.send({
@@ -43,10 +50,9 @@ router.post('/upload-song', upload.single('files'), async (req, res) => {
 // GET SONGS FROM S3 AND DATABASE (MAKE IT MATCH)
 
 router.post('/get-songs', async (req, res) => {
-  const { clientUsername, UUID } = req.body;
+  const { clientUsername } = req.body;
   const { ID } = req.params;
   console.log(ID, 'THIS IS ID');
-  console.log(UUID, 'This is UUID');
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
   };
@@ -59,6 +65,7 @@ router.post('/get-songs', async (req, res) => {
   res.send(results);
 });
 
+// get the songs with the correct url to the bucket
 router.get('/song/:ID', (req, res) => {
   const { ID } = req.params;
   console.log(ID, 'THIS IS ID');
@@ -69,7 +76,7 @@ router.get('/song/:ID', (req, res) => {
   // console.log(__dirname);
   res.sendFile(pathUrl);
 });
-
+// DELETE the songs with the correct url to the bucket
 router.delete('/song/:ID', async (req, res) => {
   const { ID } = req.params;
   const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
@@ -88,5 +95,7 @@ router.delete('/song/:ID', async (req, res) => {
     }
   });
 });
+
+// DEPLOY APPLICATION
 
 module.exports = router;

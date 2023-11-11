@@ -10,14 +10,13 @@ const reformatSongs = (songs: any): Song[] => {
     const audio = new Audio(
       `${VITE_API_URL}/songs/song/${encodeURIComponent(song.UUID)}`
     );
-    console.log(song.ID, 'THIS IS SONG ID');
     console.log(song.UUID, 'THIS IS SONG NAME');
     return {
       songname: song.songname,
       pause: audio.pause,
       currentTime: audio.currentTime,
       dataUrl: audio.src,
-      UUID: song.ID,
+      UUID: song.UUID,
     } as Song;
   });
 
