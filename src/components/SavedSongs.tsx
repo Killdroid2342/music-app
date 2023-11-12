@@ -4,12 +4,11 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { Song } from '../Pages/Main';
 const { VITE_API_URL } = import.meta.env;
+const { BUCKET_URL } = import.meta.env;
 
 const reformatSongs = (songs: any): Song[] => {
   let formattedSongs: Song[] = songs.map((song: any) => {
-    const audio = new Audio(
-      `${VITE_API_URL}/songs/song/${encodeURIComponent(song.UUID)}`
-    );
+    const audio = new Audio(`${BUCKET_URL}${song.UUID}`);
     console.log(song.UUID, 'THIS IS SONG NAME');
     return {
       songname: song.songname,
@@ -25,6 +24,7 @@ const reformatSongs = (songs: any): Song[] => {
 
 const instance = axios.create({
   baseURL: VITE_API_URL,
+  url: BUCKET_URL,
 });
 export default function SavedSongs({
   clientUsername,
