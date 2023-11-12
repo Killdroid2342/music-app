@@ -66,20 +66,21 @@ router.post('/get-songs', async (req, res) => {
 });
 
 // get the songs with the correct url to the bucket
-router.get('/song/:ID', (req, res) => {
-  const { ID } = req.params;
-  console.log(ID, 'THIS IS ID');
+// router.get('/song/:ID', (req, res) => {
+//   const { ID } = req.params;
+//   console.log(ID, 'THIS IS ID');
 
-  // console.log(ID);
-  const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
-  console.log(__dirname, 'this is dirname');
-  // console.log(__dirname);
-  res.sendFile(pathUrl);
-});
+//   // console.log(ID);
+//   const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
+//   console.log(__dirname, 'this is dirname');
+//   // console.log(__dirname);
+//   res.sendFile(pathUrl);
+// });
+
 // DELETE the songs with the correct url to the bucket
 router.delete('/song/:ID', async (req, res) => {
   const { ID } = req.params;
-  const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
+  // const pathUrl = path.join(__dirname, '../uploads/musicTMP/' + ID);
 
   fs.unlink(pathUrl, async (e) => {
     if (e) {
