@@ -76,20 +76,6 @@ export default function Main(): JSX.Element {
     }
   };
 
-  const removeSong = async (index: number) => {
-    const songToRemove = songs[index];
-    if (songToRemove) {
-      console.log(songToRemove);
-      try {
-        await instance.delete(
-          `/songs/song/${encodeURIComponent(songToRemove.UUID)}`
-        );
-        setSongs((prevSongs) => prevSongs.filter((_, i) => i !== index));
-      } catch (e) {
-        console.log(e);
-      }
-    } else return;
-  };
   return (
     <>
       <div className='flex flex-row'>
@@ -146,8 +132,9 @@ export default function Main(): JSX.Element {
           currentSong={currentSong}
           setCurrentSong={setCurrentSong}
           choosingSong={choosingSong}
-          removeSong={removeSong}
           setSongs={setSongs}
+          setMessage={setMessage}
+          message={message}
         />
       </div>
     </>

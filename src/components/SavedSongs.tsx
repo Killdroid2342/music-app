@@ -4,12 +4,13 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { Song } from '../Pages/Main';
 const { VITE_API_URL } = import.meta.env;
-const { BUCKET_URL } = import.meta.env;
 
 const reformatSongs = (songs: any): Song[] => {
   let formattedSongs: Song[] = songs.map((song: any) => {
-    const audio = new Audio(`${BUCKET_URL}${song.UUID}`);
-    console.log(song.UUID, 'THIS IS SONG NAME');
+    const audio = new Audio(
+      `https://killdroid2342musicfiles.s3.amazonaws.com/${song.UUID}`
+    );
+
     return {
       songname: song.songname,
       pause: audio.pause,
@@ -24,13 +25,13 @@ const reformatSongs = (songs: any): Song[] => {
 
 const instance = axios.create({
   baseURL: VITE_API_URL,
-  url: BUCKET_URL,
 });
 export default function SavedSongs({
   clientUsername,
   songs,
   choosingSong,
-  removeSong,
+  message,
+  setMessage,
   setSongs,
 }: any) {
   const navigate = useNavigate();
@@ -58,8 +59,24 @@ export default function SavedSongs({
       console.error(error);
     }
   };
-  console.log(songs);
-  console.log(songs.UUID, 'THIS IS NAME');
+
+  const removeSong = async (index: number) => {
+    const songToRemove = songs[index];
+    if (songToRemove) {
+      try {
+        const { data } = await instance.delete(
+          `/songs/song/${encodeURIComponent(songToRemove.UUID)}`
+        );
+        setMessage(data.message);
+        setTimeout(() => {
+          setMessage('');
+        }, 3000);
+        setSongs((prevSongs: any[]) => prevSongs.filter((_, i) => i !== index));
+      } catch (e) {
+        console.log(e);
+      }
+    } else return;
+  };
   useEffect(() => {
     gettingSongs(clientUsername);
   }, [clientUsername]);
