@@ -15,7 +15,6 @@ function Auth() {
         isAuth: cookieVal,
       });
       if (res.data.isAuth == false) {
-        console.log(res.data.isAuth);
         Nav('/');
       }
       setUser(res.data.isAuth);
