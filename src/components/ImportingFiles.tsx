@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 const { VITE_API_URL } = import.meta.env;
-
+import ImportingFilesAlert from './importFilesModal/ImportingFilesAlert';
 export default function ImportingFiles({
   songname,
   handleNameInput,
@@ -14,25 +14,38 @@ export default function ImportingFiles({
   config,
   songs,
 }: any) {
+  const [showNameAlert, setShowNameAlert] = useState(false);
+  const [showFileAlert, setShowFileAlert] = useState(false);
+  const [showTypeAlert, setShowTypeAlert] = useState(false);
+
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
-  console.log(songs);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (songname === '') {
-      alert('ENTER NAME');
+      setShowNameAlert(true);
+      setTimeout(() => {
+        setShowNameAlert(false);
+      }, 2000);
       return;
     }
 
     if (!file) {
-      alert('CHOOSE YOUR MP3 FILE');
+      setShowFileAlert(true);
+      setTimeout(() => {
+        setShowFileAlert(false);
+      }, 2000);
       return;
     }
 
     if (!file.type.startsWith('audio/')) {
-      alert('This is not an audio file. Choose an audio file');
+      setShowTypeAlert(true);
+      setTimeout(() => {
+        setShowTypeAlert(false);
+      }, 2000);
       return;
     }
 
@@ -41,27 +54,23 @@ export default function ImportingFiles({
     formData.append('songname', songname);
     formData.append('username', clientUsername);
 
-    console.log(formData);
     try {
       const { data } = await instance.post(
         '/songs/upload-song',
         formData,
         config
       );
-      console.log(config, 'THIS IS CONFIG');
-      console.log(data, 'THIS IS DATA');
 
       setMessage(data.message);
 
       if (data.message === 'You have successfully uploaded song :)') {
         const newSong = {
           songname: songname,
-
           dataUrl: URL.createObjectURL(file),
+          UUID: data.UUID,
         };
-        console.log(newSong.dataUrl);
+
         setSongs((prevSongs: any[]) => [...prevSongs, newSong]);
-        console.log(newSong);
       }
 
       setTimeout(() => {
@@ -80,6 +89,15 @@ export default function ImportingFiles({
   return (
     <div className='border border-white p-2 w-56 flex flex-col bg-neutral-700'>
       <p className='font-bold mb-2 text-center text-xl'>Upload Songs Here</p>
+      {showNameAlert && (
+        <ImportingFilesAlert message='Please enter a song name.' />
+      )}
+      {showFileAlert && (
+        <ImportingFilesAlert message='Please choose an MP3 file.' />
+      )}
+      {showTypeAlert && (
+        <ImportingFilesAlert message='Please choose an audio file.' />
+      )}
       <form method='POST' action='' encType='multipart/form-data'>
         <input
           type='text'
