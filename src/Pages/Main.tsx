@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import SavedSongs from '../components/SavedSongs';
+import SavedSongs from '../components/SavedSongs/SavedSongs';
 import Controls from '../components/Controls';
 import ImportingFiles from '../components/ImportingFiles';
 import Cookies from 'js-cookie';
