@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import { useEffect } from 'react';
-import { Song } from '../Pages/Main';
+import { useEffect, useState } from 'react';
+import { Song } from '../../Pages/Main';
+import AccountSettingsModal from './AccountSettings/AccountSettingsModal';
+import Nav from '../Nav';
 const { VITE_API_URL } = import.meta.env;
 
 const reformatSongs = (songs: any): Song[] => {
@@ -34,11 +36,9 @@ export default function SavedSongs({
   setMessage,
   setSongs,
 }: any) {
-  const navigate = useNavigate();
-  const backToHome = () => {
-    Cookies.remove('UserjwtToken');
-    navigate('/');
-  };
+  const [isAccountSettingsModalOpen, setAccountSettingsModalOpen] =
+    useState(false);
+
   const gettingSongs = async (username: string) => {
     if (username) {
       const res = await instance.post(`songs/get-songs`, {
@@ -49,14 +49,6 @@ export default function SavedSongs({
       );
       userSongs = reformatSongs(userSongs);
       setSongs(userSongs);
-    }
-  };
-  const deleteAccount = async () => {
-    try {
-      await instance.post('/user/delete-user', { username: clientUsername });
-      backToHome();
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -77,25 +69,33 @@ export default function SavedSongs({
       }
     } else return;
   };
+  const openSettings = () => {
+    setAccountSettingsModalOpen(true);
+  };
   useEffect(() => {
     gettingSongs(clientUsername);
   }, [clientUsername]);
   return (
     <div className='border border-white flex flex-col bg-neutral-700 text-center p-2'>
       <h2 className='font-bold text-lg'>Account: {clientUsername}</h2>
-      <div className='flex '>
+
+      <Nav />
+      <div className='flex'>
         <p
-          onClick={backToHome}
+          onClick={openSettings}
           className='border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'
         >
-          Log Out
+          Account Settings
         </p>
-        <p
-          onClick={deleteAccount}
-          className='border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'
-        >
-          Delete User
+        <p className='border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'>
+          Social
         </p>
+        {isAccountSettingsModalOpen && (
+          <AccountSettingsModal
+            setAccountSettingsModalOpen={setAccountSettingsModalOpen}
+            clientUsername={clientUsername}
+          />
+        )}
       </div>
       <h2 className='text-xl font-bold'>This is your Queue</h2>
       {songs.map((song: any, index: number) => (
