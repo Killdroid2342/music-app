@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 const { VITE_API_URL } = import.meta.env;
 import ImportingFilesAlert from './importFilesModal/ImportingFilesAlert';
+import Nav from './Nav';
 export default function ImportingFiles({
   songname,
   handleNameInput,
@@ -120,6 +121,7 @@ export default function ImportingFiles({
         />
       </form>
       <p className='font-bold text-2xl'>{message}</p>
+      <Nav clientUsername={clientUsername} />
     </div>
   );
 }
