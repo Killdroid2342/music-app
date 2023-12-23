@@ -1,10 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Song } from '../../Pages/Main';
-import AccountSettingsModal from './AccountSettings/AccountSettingsModal';
-import Nav from '../Nav';
 const { VITE_API_URL } = import.meta.env;
 
 const reformatSongs = (songs: any): Song[] => {
@@ -32,7 +28,6 @@ export default function SavedSongs({
   clientUsername,
   songs,
   choosingSong,
-  message,
   setMessage,
   setSongs,
 }: any) {

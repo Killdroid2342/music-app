@@ -4,13 +4,7 @@ import Controls from '../components/Controls';
 import ImportingFiles from '../components/ImportingFiles';
 import Cookies from 'js-cookie';
 import { decodeToken } from 'react-jwt';
-import axios from 'axios';
-import Auth from '../hooks/Auth';
-const { VITE_API_URL } = import.meta.env;
 
-const instance = axios.create({
-  baseURL: VITE_API_URL,
-});
 export interface Song {
   pause(): unknown;
   currentTime: number;
@@ -19,14 +13,7 @@ export interface Song {
   UUID: string;
 }
 
-window.history.pushState(null, '', window.location.href);
-
-window.onpopstate = function () {
-  window.history.go(1);
-};
-
 export default function Main(): JSX.Element {
-  Auth();
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -37,6 +24,8 @@ export default function Main(): JSX.Element {
   const [songname, setSongName] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
+
+  const isLoggedIn = !!clientUsername;
 
   const config = {
     headers: {
@@ -91,6 +80,7 @@ export default function Main(): JSX.Element {
           setMessage={setMessage}
           currentSong={currentSong}
           config={config}
+          isLoggedIn={isLoggedIn}
         />
         <div className='h-screen w-10/12 flex flex-col justify-center items-center'>
           <p className='text-2xl'>
