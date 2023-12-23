@@ -3,6 +3,7 @@ import Main from './Pages/Main';
 import Navigation from './Pages/Navigation';
 import Home from './Pages/Home';
 import NotFound from './Pages/NotFound';
+import Social from './Pages/Social';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: '/nav',
     element: <Navigation />,
+  },
+  {
+    path: '/social',
+    element: <Social />,
   },
   {
     path: '*',
