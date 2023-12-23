@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AccountSettingsModal from './SavedSongs/AccountSettings/AccountSettingsModal';
-
+import { useNavigate } from 'react-router-dom';
 const Nav = ({ clientUsername }: any) => {
   const [isAccountSettingsModalOpen, setAccountSettingsModalOpen] =
     useState(false);
+  const navigate = useNavigate();
   const openSettings = () => {
     setAccountSettingsModalOpen(true);
   };
@@ -19,7 +20,10 @@ const Nav = ({ clientUsername }: any) => {
       >
         Account Settings
       </p>
-      <p className='text-center border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'>
+      <p
+        onClick={() => navigate('/nav')}
+        className='text-center border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'
+      >
         Nav
       </p>
       {isAccountSettingsModalOpen && (

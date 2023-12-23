@@ -1,10 +1,15 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
+  const navigate = useNavigate();
   return (
-    <div>
-      <p>Add Friends</p>
-      <p>Music Pages</p>
+    <div className='flex items-center justify-center h-screen'>
+      <p onClick={() => navigate('/social')} className='p-5 text-2xl'>
+        Social
+      </p>
+      <p onClick={() => navigate('/main')} className='p-5 text-2xl'>
+        Music Page
+      </p>
     </div>
   );
 };
