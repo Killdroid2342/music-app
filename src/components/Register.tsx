@@ -1,11 +1,34 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
+const { VITE_API_URL } = import.meta.env;
 
-const Register = ({
-  handleRegisterSubmit,
-  handleRegisterInputChange,
-  changeForm,
-  form,
-}: any) => {
+const Register = ({ changeForm, form }: any) => {
+  const [registerData, setRegisterData] = useState({
+    username: '',
+    password: '',
+  });
+  const [modal, setModal] = useState(false);
+  const instance = axios.create({
+    baseURL: VITE_API_URL,
+  });
+  function handleRegisterInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setRegisterData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  }
+  async function handleRegisterSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const res = await instance.post('/user/register-user', {
+      username: registerData.username,
+      password: registerData.password,
+    });
+    setModal(res.data.message);
+    setTimeout(() => {
+      setModal(false);
+    }, 1200);
+  }
   return (
     <div className='flex justify-center h-screen'>
       <div className='my-auto p-4 w-96 rounded-lg border-2 border-black backdrop-blur bg-black/60'>
