@@ -87,7 +87,7 @@ export default function ImportingFiles({
   };
 
   return (
-    <div className='border border-white p-2 w-56 flex flex-col bg-neutral-700'>
+    <div className='border border-white w-56 flex flex-col bg-neutral-700 h-full'>
       <p className='font-bold mb-2 text-center text-xl'>Upload Songs Here</p>
       {isLoggedIn ? (
         <div>
@@ -122,7 +122,6 @@ export default function ImportingFiles({
             />
           </form>
           <p className='font-bold text-2xl'>{message}</p>
-          <Nav clientUsername={clientUsername} />
         </div>
       ) : (
         <p onClick={() => naviagte('/')} className='text-center cursor-pointer'>

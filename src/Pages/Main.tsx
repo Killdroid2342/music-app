@@ -4,6 +4,7 @@ import Controls from '../components/Controls';
 import ImportingFiles from '../components/ImportingFiles';
 import Cookies from 'js-cookie';
 import { decodeToken } from 'react-jwt';
+import Nav from '../components/Nav';
 
 export interface Song {
   pause(): unknown;
@@ -67,65 +68,73 @@ export default function Main(): JSX.Element {
 
   return (
     <>
-      <div className='flex flex-row'>
-        <ImportingFiles
-          songs={[]}
-          setSongs={setSongs}
-          clientUsername={clientUsername}
-          songname={songname}
-          handleNameInput={handleNameInput}
-          message={message}
-          file={file}
-          setFile={setFile}
-          setMessage={setMessage}
-          currentSong={currentSong}
-          config={config}
-          isLoggedIn={isLoggedIn}
-        />
-        <div className='h-screen w-10/12 flex flex-col justify-center items-center'>
-          <p className='text-2xl'>
-            {currentSong ? currentSong.songname : 'Select Song'}
-          </p>
-          {currentSong?.dataUrl ? (
-            <audio
-              ref={audioRef}
-              controls={false}
-              onEnded={() => setCurrentSong(null)}
-              onError={() => setCurrentSong(null)}
-              onTimeUpdate={() => {
-                if (audioRef.current) {
-                  const progress =
-                    (audioRef.current.currentTime / audioRef.current.duration) *
-                    100;
-                  setProgress(progress);
-                }
-              }}
-            >
-              <source src={currentSong.dataUrl} type='audio/mpeg' />
-            </audio>
-          ) : null}
-          <Controls
-            audioRef={audioRef}
-            isPlaying={isPlaying}
-            setIsPlaying={setIsPlaying}
+      <div className='flex flex-row h-screen'>
+        <div className=' border border-red-900'>
+          <ImportingFiles
+            songs={[]}
+            setSongs={setSongs}
+            clientUsername={clientUsername}
+            songname={songname}
+            handleNameInput={handleNameInput}
+            message={message}
+            file={file}
+            setFile={setFile}
+            setMessage={setMessage}
             currentSong={currentSong}
-            setCurrentSong={setCurrentSong}
-            songs={songs}
-            progress={progress}
-            setVolume={setVolume}
-            volume={volume}
+            config={config}
+            isLoggedIn={isLoggedIn}
           />
         </div>
-        <SavedSongs
-          clientUsername={clientUsername}
-          songs={songs}
-          currentSong={currentSong}
-          setCurrentSong={setCurrentSong}
-          choosingSong={choosingSong}
-          setSongs={setSongs}
-          setMessage={setMessage}
-          message={message}
-        />
+        <div className='flex flex-col flex-1'>
+          <Nav clientUsername={clientUsername} />
+          <div className='flex-1 flex flex-col justify-center items-center'>
+            <p className='text-2xl'>
+              {currentSong ? currentSong.songname : 'Select Song'}
+            </p>
+            {currentSong?.dataUrl ? (
+              <audio
+                ref={audioRef}
+                controls={false}
+                onEnded={() => setCurrentSong(null)}
+                onError={() => setCurrentSong(null)}
+                onTimeUpdate={() => {
+                  if (audioRef.current) {
+                    const progress =
+                      (audioRef.current.currentTime /
+                        audioRef.current.duration) *
+                      100;
+                    setProgress(progress);
+                  }
+                }}
+              >
+                <source src={currentSong.dataUrl} type='audio/mpeg' />
+              </audio>
+            ) : null}
+            <Controls
+              audioRef={audioRef}
+              isPlaying={isPlaying}
+              setIsPlaying={setIsPlaying}
+              currentSong={currentSong}
+              setCurrentSong={setCurrentSong}
+              songs={songs}
+              progress={progress}
+              setVolume={setVolume}
+              volume={volume}
+            />
+          </div>
+        </div>
+        <div className=' border border-green-900 '>
+          <SavedSongs
+            clientUsername={clientUsername}
+            songs={songs}
+            currentSong={currentSong}
+            setCurrentSong={setCurrentSong}
+            choosingSong={choosingSong}
+            setSongs={setSongs}
+            setMessage={setMessage}
+            message={message}
+          />
+        </div>
       </div>
     </>
   );

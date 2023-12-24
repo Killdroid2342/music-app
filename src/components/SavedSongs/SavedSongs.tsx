@@ -66,7 +66,7 @@ export default function SavedSongs({
     gettingSongs(clientUsername);
   }, [clientUsername]);
   return (
-    <div className='border border-white flex flex-col bg-neutral-700 text-center p-2'>
+    <div className='border border-white flex flex-col bg-neutral-700 text-center h-full overflow-y-auto'>
       <h2 className='text-xl font-bold'>This is your Queue</h2>
       {songs.map((song: any, index: number) => (
         <div className='flex justify-center items-center mt-5' key={index}>
