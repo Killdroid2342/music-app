@@ -4,6 +4,7 @@ import Home from './Pages/Home';
 import NotFound from './Pages/NotFound';
 import Social from './Pages/Social';
 import Friends from './Pages/Friends';
+import Profile from './Pages/Profile';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/friends',
     element: <Friends />,
+  },
+  {
+    path: '/Profile',
+    element: <Profile />,
   },
   {
     path: '*',
