@@ -20,18 +20,19 @@ const Social = () => {
   return (
     <div className='min-h-screen flex flex-col'>
       <Nav clientUsername={clientUsername} />
-      <div className='flex-1 flex items-center justify-center'>
-        <form
-          action=''
-          className='mt-4 flex flex-col items-center justify-center'
-        >
-          <input
-            type='text'
-            placeholder='Search For Users'
-            className='border border-red-900 p-2'
-          />
-        </form>
-      </div>
+      <h1 className='text-center text-3xl mt-5 mb-5 font-bold'>
+        Search For Users
+      </h1>
+      <form
+        action=''
+        className='mt-4 flex flex-col items-center justify-center'
+      >
+        <input
+          type='text'
+          placeholder='Search For Users'
+          className='p-3 w-72 rounded-3xl bg-neutral-700 transition-all duration-700 focus:border-white'
+        />
+      </form>
     </div>
   );
 };
