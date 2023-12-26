@@ -18,10 +18,12 @@ const Friends = () => {
     usernameJWT();
   });
   return (
-    <div className='min-h-screen flex flex-col'>
+    <>
       <Nav clientUsername={clientUsername} />
-      <h1 className='text-center'>Here are the people you added</h1>
-    </div>
+      <h1 className='text-center text-3xl mt-5 mb-5 font-bold'>
+        Here are the people you added
+      </h1>
+    </>
   );
 };
 
