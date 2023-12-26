@@ -26,6 +26,10 @@ const AccountSettingsModal = ({
       console.error(error);
     }
   };
+  const goToProfile = () => {
+    navigate('/profile');
+    setAccountSettingsModalOpen(false);
+  };
   return (
     <>
       <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-opacity-50 bg-black'>
@@ -47,6 +51,12 @@ const AccountSettingsModal = ({
             className='border-2 border-black text-black rounded-2xl p-2 m-2 cursor-pointer font-bold'
           >
             Delete User
+          </p>
+          <p
+            onClick={goToProfile}
+            className='border-2 border-black text-black rounded-2xl p-2 m-2 cursor-pointer font-bold'
+          >
+            Profile
           </p>
         </div>
       </div>
