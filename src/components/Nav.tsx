@@ -39,12 +39,6 @@ const Nav = ({ clientUsername }: any) => {
         >
           Friends
         </p>
-        <p
-          onClick={() => navigate('/Profile')}
-          className='text-center border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'
-        >
-          Profile
-        </p>
       </div>
       {isAccountSettingsModalOpen && (
         <AccountSettingsModal

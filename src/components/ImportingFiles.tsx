@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 const { VITE_API_URL } = import.meta.env;
 import ImportingFilesAlert from './importFilesModal/ImportingFilesAlert';
-import Nav from './Nav';
 import { useNavigate } from 'react-router-dom';
 export default function ImportingFiles({
   songname,
