@@ -11,6 +11,7 @@ const Profile = () => {
     description: 'This is the default description',
     profileImage: '/pfpimage.png',
   });
+  console.log(profileData, 'THIS IS PROFILE DATA');
 
   const usernameJWT = () => {
     const getJWT = Cookies.get('UserjwtToken');
@@ -52,7 +53,7 @@ const Profile = () => {
           <p className='text-lg font-semibold text-gray-700'>
             Account Name: {clientUsername}
           </p>
-          <p className='text-sm text-gray-500 p-3'>Added Friends: 100</p>
+          <p className='text-sm text-gray-500 p-3'>FOLLOWERS GOES HERE</p>
           <p className='text-sm text-gray-700 mb-6'>
             Description: {profileData.description}
           </p>
