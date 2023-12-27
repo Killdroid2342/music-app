@@ -40,11 +40,25 @@ const deleteUser = async (username) => {
 async function comparePassswords(passwords, hash) {
   return bcrypt.compareSync(passwords, hash);
 }
-
+const searchUsers = async (username) => {
+  const conn = getDbConn();
+  const res = conn
+    .promise()
+    .query(
+      'SELECT username FROM musicplayer_users WHERE username LIKE CONCAT("%", ?, "%")',
+      [username]
+    )
+    .then(([rows, fields]) => {
+      return rows;
+    });
+  conn.end();
+  return res;
+};
 module.exports = {
   createUser,
   isUserExists,
   hashPassword,
   comparePassswords,
   deleteUser,
+  searchUsers,
 };
