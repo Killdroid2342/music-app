@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import Cookies from 'js-cookie';
 import { decodeToken } from 'react-jwt';
-const Friends = () => {
+const Following = () => {
   const [clientUsername, setClientUsername] = useState('');
   console.log(clientUsername);
   const usernameJWT = () => {
@@ -27,4 +27,4 @@ const Friends = () => {
   );
 };
 
-export default Friends;
+export default Following;
