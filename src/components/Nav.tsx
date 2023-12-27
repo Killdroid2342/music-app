@@ -34,10 +34,10 @@ const Nav = ({ clientUsername }: any) => {
           Music Page
         </p>
         <p
-          onClick={() => navigate('/friends')}
+          onClick={() => navigate('/following')}
           className='text-center border-2 border-white rounded-2xl p-2 m-2 cursor-pointer font-bold'
         >
-          Friends
+          Following
         </p>
       </div>
       {isAccountSettingsModalOpen && (
