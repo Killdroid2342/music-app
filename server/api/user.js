@@ -9,6 +9,7 @@ const {
   hashPassword,
   comparePassswords,
   deleteUser,
+  searchUsers,
 } = require('../modal/user');
 
 const { jwtToken } = require('../modal/token');
@@ -66,6 +67,12 @@ router.post('/delete-user', async (req, res) => {
       message: 'An error occurred while deleting the user account',
     });
   }
+});
+
+router.post('/search', async (req, res) => {
+  const { searchItem } = req.body;
+  const matchingItems = await searchUsers(searchItem);
+  res.status(200).send(matchingItems);
 });
 
 module.exports = router;
