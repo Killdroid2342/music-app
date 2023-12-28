@@ -15,7 +15,7 @@ const Social = () => {
   const [followers, setFollowers] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState('');
   console.log(followers);
-
+  const allFollowers = followers.length;
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
@@ -95,7 +95,7 @@ const Social = () => {
           ))}
         </div>
         <p className='text-center text-lg font-semibold text-white mt-4'>
-          Followers: {followers.length}
+          Followers: {allFollowers}
         </p>
       </form>
     </div>

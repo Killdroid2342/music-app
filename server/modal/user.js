@@ -24,10 +24,12 @@ const hashPassword = async (password, saltRounds) => {
 };
 const createUser = async (username, password) => {
   const conn = getDbConn();
+  console.log(username, password);
   conn.query(
-    'INSERT INTO musicplayer_users (username, password) VALUES (?,?)',
+    'INSERT INTO musicplayer_users (username, password, followers) VALUES (?, ?, 0)',
     [username, password]
   );
+
   conn.end();
 };
 
@@ -54,6 +56,7 @@ const searchUsers = async (username) => {
   conn.end();
   return res;
 };
+
 module.exports = {
   createUser,
   isUserExists,
