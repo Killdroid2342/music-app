@@ -14,8 +14,9 @@ const Social = () => {
   const [allUsers, setAllUsers] = useState<Users[]>([]);
   const [followers, setFollowers] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  console.log(followers);
-  const allFollowers = followers.length;
+  const [allFollowers, setAllFollowers] = useState(0);
+
+  // const allFollowers = followers.length;
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
@@ -46,13 +47,25 @@ const Social = () => {
     }
   };
 
-  const followUnfollow = (username: string) => {
+  const followUnfollow = async (username: string) => {
     if (followers.includes(username)) {
       setFollowers((prevFollowers) =>
         prevFollowers.filter((user) => user !== username)
       );
+      setAllFollowers((prevAllFollowers) => prevAllFollowers - 1);
+
+      instance.post('/user/followercount', {
+        allFollowers: allFollowers - 1,
+        username: clientUsername,
+      });
     } else {
       setFollowers((prevFollowers) => [...prevFollowers, username]);
+      setAllFollowers((prevAllFollowers) => prevAllFollowers + 1);
+
+      instance.post('/user/followercount', {
+        allFollowers: allFollowers + 1,
+        username: clientUsername,
+      });
     }
   };
 
