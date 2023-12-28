@@ -10,6 +10,7 @@ const {
   comparePassswords,
   deleteUser,
   searchUsers,
+  followerCount,
 } = require('../modal/user');
 
 const { jwtToken } = require('../modal/token');
@@ -73,6 +74,22 @@ router.post('/search', async (req, res) => {
   const { searchItem } = req.body;
   const matchingItems = await searchUsers(searchItem);
   res.status(200).send(matchingItems);
+});
+
+router.post('/followercount', async (req, res) => {
+  try {
+    const { allFollowers, username } = req.body;
+    console.log(allFollowers, username);
+    await followerCount(allFollowers, username);
+    res.send({
+      message: 'Updated follower count',
+    });
+  } catch (e) {
+    res.send({
+      message: 'FAILED',
+    });
+    console.log(e);
+  }
 });
 
 module.exports = router;
