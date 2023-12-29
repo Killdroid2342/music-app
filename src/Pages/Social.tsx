@@ -16,7 +16,6 @@ const Social = () => {
   const [searchValue, setSearchValue] = useState('');
   const [allFollowers, setAllFollowers] = useState(0);
 
-  // const allFollowers = followers.length;
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });

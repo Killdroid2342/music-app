@@ -66,6 +66,22 @@ const followerCount = (username, followers) => {
   conn.end();
 };
 
+const getFollowerCount = async (username) => {
+  const conn = getDbConn();
+  try {
+    const res = await conn
+      .promise()
+      .query('SELECT followers FROM musicplayer_users WHERE username = ?', [
+        username,
+      ])
+      .then(([rows, fields]) => {
+        return rows;
+      });
+    return res;
+  } finally {
+    conn.end();
+  }
+};
 module.exports = {
   createUser,
   isUserExists,
@@ -74,4 +90,5 @@ module.exports = {
   deleteUser,
   searchUsers,
   followerCount,
+  getFollowerCount,
 };
