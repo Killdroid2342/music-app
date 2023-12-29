@@ -11,6 +11,7 @@ const {
   deleteUser,
   searchUsers,
   followerCount,
+  getFollowerCount,
 } = require('../modal/user');
 
 const { jwtToken } = require('../modal/token');
@@ -90,6 +91,13 @@ router.post('/followercount', async (req, res) => {
     });
     console.log(e);
   }
+});
+
+router.post('/getfollowercount', async (req, res) => {
+  const { username } = req.body;
+  console.log(username, 'THIS IS USERNAME');
+  const followerCount = await getFollowerCount(username);
+  res.send(JSON.stringify(followerCount));
 });
 
 module.exports = router;
