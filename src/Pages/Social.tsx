@@ -4,6 +4,7 @@ const { VITE_API_URL } = import.meta.env;
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { decodeToken } from 'react-jwt';
+import ViewProfileModal from '../components/ViewProfileModal';
 
 interface Users {
   username: string;
@@ -15,6 +16,7 @@ const Social = () => {
   const [followers, setFollowers] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [allFollowers, setAllFollowers] = useState(0);
+  const [userProfileModal, setUserProfileModal] = useState(false);
 
   const instance = axios.create({
     baseURL: VITE_API_URL,
@@ -67,7 +69,9 @@ const Social = () => {
       });
     }
   };
-
+  const openUserProfileModal = () => {
+    setUserProfileModal(true);
+  };
   return (
     <div className='min-h-screen flex flex-col'>
       <Nav clientUsername={clientUsername} />
@@ -91,7 +95,8 @@ const Social = () => {
               <p className='text-center text-lg font-semibold text-neutral-900 p-4'>
                 {item.username}
               </p>
-              <div className='flex flex-row justify-evenly'>
+              <img src='' alt='IMG GOES HERE' />
+              <div className='flex flex-col justify-evenly'>
                 <input
                   type='button'
                   onClick={() => followUnfollow(item.username)}
@@ -102,14 +107,23 @@ const Social = () => {
                   }
                   className='text-center font-semibold text-neutral-900 border border-neutral-700 p-2 m-2 rounded-lg cursor-pointer'
                 />
+                <p
+                  className='text-center text-black cursor-pointer'
+                  onClick={openUserProfileModal}
+                >
+                  View Profile
+                </p>
               </div>
             </div>
           ))}
         </div>
-        <p className='text-center text-lg font-semibold text-white mt-4'>
-          Followers: {allFollowers}
-        </p>
       </form>
+      {userProfileModal && (
+        <ViewProfileModal
+          userProfileModal={userProfileModal}
+          setUserProfileModal={setUserProfileModal}
+        />
+      )}
     </div>
   );
 };
