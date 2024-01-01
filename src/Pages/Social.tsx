@@ -15,7 +15,7 @@ const Social = () => {
   const [allUsers, setAllUsers] = useState<Users[]>([]);
   const [followers, setFollowers] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [allFollowers, setAllFollowers] = useState(0);
+  const [allFollowing, setAllFollowing] = useState(0);
   const [userProfileModal, setUserProfileModal] = useState(false);
 
   const instance = axios.create({
@@ -53,18 +53,18 @@ const Social = () => {
       setFollowers((prevFollowers) =>
         prevFollowers.filter((user) => user !== username)
       );
-      setAllFollowers((prevAllFollowers) => prevAllFollowers - 1);
+      setAllFollowing((prevAllFollowers) => prevAllFollowers - 1);
 
       instance.post('/user/followercount', {
-        allFollowers: allFollowers - 1,
+        allFollowing: allFollowing - 1,
         username: clientUsername,
       });
     } else {
       setFollowers((prevFollowers) => [...prevFollowers, username]);
-      setAllFollowers((prevAllFollowers) => prevAllFollowers + 1);
+      setAllFollowing((prevAllFollowers) => prevAllFollowers + 1);
 
       instance.post('/user/followercount', {
-        allFollowers: allFollowers + 1,
+        allFollowing: allFollowing + 1,
         username: clientUsername,
       });
     }
