@@ -12,8 +12,11 @@ const Following = () => {
   });
 
   const [clientUsername, setClientUsername] = useState('');
-  const [followingAmount, setFollowingAmount] = useState<any>(null);
+  const [followingAmount, setFollowingAmount] = useState<any>({
+    followers: 0,
+  });
   console.log(clientUsername);
+  console.log(followingAmount);
 
   const getFollowingAmount = async () => {
     try {
@@ -48,15 +51,8 @@ const Following = () => {
       <h1 className='text-center text-3xl mt-5 mb-5 font-bold'>
         Here are the people you follow
       </h1>
-      {followingAmount === null ? (
-        <p>Loading...</p>
-      ) : followingAmount.length === 0 ? (
-        <p>No followers found.</p>
-      ) : (
-        <p>Amount of followers: {followingAmount[0]?.followers}</p>
-      )}
+      <p>Following: {followingAmount[0]?.followers}</p>
       <p>Accounts you follow</p>
-      {/* USE .MAP TO MAP OUT THE ACCOUNTS YOU FOLLOW IN A 3 by 3 */}
     </>
   );
 };
