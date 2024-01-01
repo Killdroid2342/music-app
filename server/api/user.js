@@ -10,8 +10,8 @@ const {
   comparePassswords,
   deleteUser,
   searchUsers,
-  followerCount,
-  getFollowerCount,
+  followingCount,
+  getFollowingCount,
 } = require('../modal/user');
 
 const { jwtToken } = require('../modal/token');
@@ -79,9 +79,9 @@ router.post('/search', async (req, res) => {
 
 router.post('/followercount', async (req, res) => {
   try {
-    const { allFollowers, username } = req.body;
-    console.log(allFollowers, username);
-    await followerCount(allFollowers, username);
+    const { allFollowing, username } = req.body;
+    console.log(allFollowing, username);
+    await followingCount(allFollowing, username);
     res.send({
       message: 'Updated follower count',
     });
@@ -96,8 +96,8 @@ router.post('/followercount', async (req, res) => {
 router.post('/getfollowercount', async (req, res) => {
   const { username } = req.body;
   console.log(username, 'THIS IS USERNAME');
-  const followerCount = await getFollowerCount(username);
-  res.send(JSON.stringify(followerCount));
+  const followingCount = await getFollowingCount(username);
+  res.send(JSON.stringify(followingCount));
 });
 
 module.exports = router;

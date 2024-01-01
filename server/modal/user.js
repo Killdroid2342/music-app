@@ -56,22 +56,22 @@ const searchUsers = async (username) => {
   conn.end();
   return res;
 };
-const followerCount = (username, followers) => {
+const followingCount = (username, following) => {
   const conn = getDbConn();
-  console.log(username, followers, 'DATATATAT');
-  conn.query('UPDATE musicplayer_users SET followers = ? WHERE username = ?', [
+  console.log(username, following, 'DATATATAT');
+  conn.query('UPDATE musicplayer_users SET following = ? WHERE username = ?', [
     username,
-    followers,
+    following,
   ]);
   conn.end();
 };
 
-const getFollowerCount = async (username) => {
+const getFollowingCount = async (username) => {
   const conn = getDbConn();
   try {
     const res = await conn
       .promise()
-      .query('SELECT followers FROM musicplayer_users WHERE username = ?', [
+      .query('SELECT following FROM musicplayer_users WHERE username = ?', [
         username,
       ])
       .then(([rows, fields]) => {
@@ -89,6 +89,6 @@ module.exports = {
   comparePassswords,
   deleteUser,
   searchUsers,
-  followerCount,
-  getFollowerCount,
+  followingCount,
+  getFollowingCount,
 };
