@@ -22,12 +22,12 @@ const hashPassword = async (password, saltRounds) => {
   const res = bcrypt.hashSync(password, saltRounds);
   return res;
 };
-const createUser = async (username, password) => {
+const createUser = async (username, password, users_following) => {
   const conn = getDbConn();
   console.log(username, password);
   conn.query(
-    'INSERT INTO musicplayer_users (username, password, followers) VALUES (?, ?, 0)',
-    [username, password]
+    'INSERT INTO musicplayer_users (username, password, following, users_following) VALUES (?, ?, 0, ?)',
+    [username, password, users_following || '']
   );
 
   conn.end();
