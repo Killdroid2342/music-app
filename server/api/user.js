@@ -77,27 +77,4 @@ router.post('/search', async (req, res) => {
   res.status(200).send(matchingItems);
 });
 
-router.post('/followercount', async (req, res) => {
-  try {
-    const { allFollowing, username } = req.body;
-    console.log(allFollowing, username);
-    await followingCount(allFollowing, username);
-    res.send({
-      message: 'Updated follower count',
-    });
-  } catch (e) {
-    res.send({
-      message: 'FAILED',
-    });
-    console.log(e);
-  }
-});
-
-router.post('/getfollowercount', async (req, res) => {
-  const { username } = req.body;
-  console.log(username, 'THIS IS USERNAME');
-  const followingCount = await getFollowingCount(username);
-  res.send(JSON.stringify(followingCount));
-});
-
 module.exports = router;
