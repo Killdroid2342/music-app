@@ -13,7 +13,7 @@ const Following = () => {
 
   const [clientUsername, setClientUsername] = useState('');
   const [followingAmount, setFollowingAmount] = useState<any>({
-    followers: 0,
+    following: 0,
   });
   console.log(clientUsername);
   console.log(followingAmount);
@@ -51,7 +51,7 @@ const Following = () => {
       <h1 className='text-center text-3xl mt-5 mb-5 font-bold'>
         Here are the people you follow
       </h1>
-      <p>Following: {followingAmount[0]?.followers}</p>
+      <p>Following: {followingAmount[0]?.following}</p>
       <p>Accounts you follow</p>
     </>
   );
