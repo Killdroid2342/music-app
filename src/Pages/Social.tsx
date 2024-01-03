@@ -13,11 +13,9 @@ interface Users {
 const Social = () => {
   const [clientUsername, setClientUsername] = useState('');
   const [allUsers, setAllUsers] = useState<Users[]>([]);
-  const [followers, setFollowers] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [allFollowing, setAllFollowing] = useState(0);
   const [userProfileModal, setUserProfileModal] = useState(false);
-
+  const [followingUsers, setFollowingUsers] = useState({});
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
@@ -48,27 +46,6 @@ const Social = () => {
     }
   };
 
-  const followUnfollow = async (username: string) => {
-    if (followers.includes(username)) {
-      setFollowers((prevFollowers) =>
-        prevFollowers.filter((user) => user !== username)
-      );
-      setAllFollowing((prevAllFollowers) => prevAllFollowers - 1);
-
-      instance.post('/user/followercount', {
-        allFollowing: allFollowing - 1,
-        username: clientUsername,
-      });
-    } else {
-      setFollowers((prevFollowers) => [...prevFollowers, username]);
-      setAllFollowing((prevAllFollowers) => prevAllFollowers + 1);
-
-      instance.post('/user/followercount', {
-        allFollowing: allFollowing + 1,
-        username: clientUsername,
-      });
-    }
-  };
   const openUserProfileModal = () => {
     setUserProfileModal(true);
   };
@@ -99,12 +76,6 @@ const Social = () => {
               <div className='flex flex-col justify-evenly'>
                 <input
                   type='button'
-                  onClick={() => followUnfollow(item.username)}
-                  value={
-                    followers.includes(item.username)
-                      ? 'Unfollow User'
-                      : 'Follow User'
-                  }
                   className='text-center font-semibold text-neutral-900 border border-neutral-700 p-2 m-2 rounded-lg cursor-pointer'
                 />
                 <p
