@@ -12,22 +12,8 @@ const Following = () => {
   });
 
   const [clientUsername, setClientUsername] = useState('');
-  const [followingAmount, setFollowingAmount] = useState<any>({
-    following: 0,
-  });
-  console.log(clientUsername);
-  console.log(followingAmount);
 
-  const getFollowingAmount = async () => {
-    try {
-      const res = await instance.post('/user/getfollowercount', {
-        username: clientUsername,
-      });
-      setFollowingAmount(res.data);
-    } catch (error) {
-      console.error('Error fetching following amount:', error);
-    }
-  };
+  console.log(clientUsername);
 
   const usernameJWT = () => {
     const getJWT = Cookies.get('UserjwtToken');
@@ -42,7 +28,6 @@ const Following = () => {
 
   useEffect(() => {
     usernameJWT();
-    getFollowingAmount();
   }, [clientUsername]);
 
   return (
@@ -51,8 +36,9 @@ const Following = () => {
       <h1 className='text-center text-3xl mt-5 mb-5 font-bold'>
         Here are the people you follow
       </h1>
-      <p>Following: {followingAmount[0]?.following}</p>
+      {/* to get the amount you find the length of how many accounts you follow */}
       <p>Accounts you follow</p>
+      {/* MAP OUT ACCOUNTS YOU FOLLOW AND FILTER DEPENDING ON CLIENTUSERNAME */}
     </>
   );
 };
