@@ -26,7 +26,7 @@ const createUser = async (username, password, users_following) => {
   const conn = getDbConn();
   console.log(username, password);
   conn.query(
-    'INSERT INTO musicplayer_users (username, password, following, users_following) VALUES (?, ?, 0, ?)',
+    'INSERT INTO musicplayer_users (username, password, users_following) VALUES (?, ?, ?)',
     [username, password, users_following || '']
   );
 
@@ -56,32 +56,7 @@ const searchUsers = async (username) => {
   conn.end();
   return res;
 };
-const followingCount = (username, following) => {
-  const conn = getDbConn();
-  console.log(username, following, 'DATATATAT');
-  conn.query('UPDATE musicplayer_users SET following = ? WHERE username = ?', [
-    username,
-    following,
-  ]);
-  conn.end();
-};
 
-const getFollowingCount = async (username) => {
-  const conn = getDbConn();
-  try {
-    const res = await conn
-      .promise()
-      .query('SELECT following FROM musicplayer_users WHERE username = ?', [
-        username,
-      ])
-      .then(([rows, fields]) => {
-        return rows;
-      });
-    return res;
-  } finally {
-    conn.end();
-  }
-};
 module.exports = {
   createUser,
   isUserExists,
@@ -89,6 +64,4 @@ module.exports = {
   comparePassswords,
   deleteUser,
   searchUsers,
-  followingCount,
-  getFollowingCount,
 };
