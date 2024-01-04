@@ -12,12 +12,6 @@ const EditProfileModal = ({
     setProfileModal(false);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setProfileFile(file);
-  };
-
   const handleProfileData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -52,17 +46,6 @@ const EditProfileModal = ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-
-          <label className='mb-2 text-lg font-semibold text-gray-800'>
-            Change Image
-          </label>
-          <input
-            type='file'
-            className='p-2 border border-gray-300 rounded-md mb-4'
-            accept='image/*'
-            onChange={handleFileUpload}
-          />
-
           <input
             type='submit'
             value='Submit'

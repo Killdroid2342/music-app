@@ -45,16 +45,11 @@ const Profile = () => {
           Profile
         </h1>
         <div className='flex flex-col items-center'>
-          <img
-            src={profileData.profileImage}
-            alt='pfp image'
-            className='w-40 h-40 rounded-full mb-4'
-          />
           <p className='text-lg font-semibold text-gray-700'>
             Account Name: {clientUsername}
           </p>
-          <p className='text-sm text-gray-500 p-3'>FOLLOWERS GOES HERE</p>
-          <p className='text-sm text-gray-700 mb-6'>
+
+          <p className='text-sm text-gray-700 mb-6 p-3'>
             Description: {profileData.description}
           </p>
           <button
