@@ -56,6 +56,18 @@ const searchUsers = async (username) => {
   conn.end();
   return res;
 };
+const usersFollowing = (username, user_followers) => {
+  const conn = getDbConn();
+  console.log(
+    username,
+    user_followers,
+    'this is the username  and user_followers'
+  );
+  conn.query(
+    'UPDATE musicplayer_users SET users_following = CONCAT(users_following, ?) WHERE username = ?',
+    [`,` + user_followers, username]
+  );
+};
 
 module.exports = {
   createUser,
@@ -64,4 +76,5 @@ module.exports = {
   comparePassswords,
   deleteUser,
   searchUsers,
+  usersFollowing,
 };
