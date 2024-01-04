@@ -10,8 +10,7 @@ const {
   comparePassswords,
   deleteUser,
   searchUsers,
-  followingCount,
-  getFollowingCount,
+  usersFollowing,
 } = require('../modal/user');
 
 const { jwtToken } = require('../modal/token');
@@ -75,6 +74,17 @@ router.post('/search', async (req, res) => {
   const { searchItem } = req.body;
   const matchingItems = await searchUsers(searchItem);
   res.status(200).send(matchingItems);
+});
+
+router.post('/followingUser', async (req, res) => {
+  const { username, followingUsers } = req.body;
+
+  console.log(
+    username,
+    followingUsers,
+    'this is the username and followingUsers'
+  );
+  usersFollowing(username, followingUsers);
 });
 
 module.exports = router;
