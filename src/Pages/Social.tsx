@@ -4,7 +4,6 @@ const { VITE_API_URL } = import.meta.env;
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { decodeToken } from 'react-jwt';
-import ViewProfileModal from '../components/ViewProfileModal';
 
 interface Users {
   username: string;
@@ -14,8 +13,8 @@ const Social = () => {
   const [clientUsername, setClientUsername] = useState('');
   const [allUsers, setAllUsers] = useState<Users[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [userProfileModal, setUserProfileModal] = useState(false);
-  const [followingUsers, setFollowingUsers] = useState({});
+  const [followingUsers, setFollowingUsers] = useState<Users[]>([]);
+  console.log(followingUsers);
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
@@ -46,9 +45,34 @@ const Social = () => {
     }
   };
 
-  const openUserProfileModal = () => {
-    setUserProfileModal(true);
+  const handleFollowingUser = async (selectedUser: Users) => {
+    try {
+      const isAlreadyFollowing = followingUsers.some(
+        (user) => user.username === selectedUser.username
+      );
+
+      if (!isAlreadyFollowing) {
+        // Use the callback form to work with the most up-to-date state
+        setFollowingUsers((prevFollowingUsers) => [
+          ...prevFollowingUsers,
+          selectedUser,
+        ]);
+
+        // Pass the updated state to the API call
+        const res = await instance.post('/user/followingUser', {
+          username: clientUsername,
+          followingUsers: [...followingUsers, selectedUser], // Updated state
+        });
+
+        console.log(res, 'this is res');
+      } else {
+        console.log(`You are already following ${selectedUser.username}`);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
+
   return (
     <div className='min-h-screen flex flex-col'>
       <Nav clientUsername={clientUsername} />
@@ -72,29 +96,18 @@ const Social = () => {
               <p className='text-center text-lg font-semibold text-neutral-900 p-4'>
                 {item.username}
               </p>
-              <img src='' alt='IMG GOES HERE' />
               <div className='flex flex-col justify-evenly'>
                 <input
                   type='button'
                   className='text-center font-semibold text-neutral-900 border border-neutral-700 p-2 m-2 rounded-lg cursor-pointer'
+                  value='follow user'
+                  onClick={() => handleFollowingUser(item)}
                 />
-                <p
-                  className='text-center text-black cursor-pointer'
-                  onClick={openUserProfileModal}
-                >
-                  View Profile
-                </p>
               </div>
             </div>
           ))}
         </div>
       </form>
-      {userProfileModal && (
-        <ViewProfileModal
-          userProfileModal={userProfileModal}
-          setUserProfileModal={setUserProfileModal}
-        />
-      )}
     </div>
   );
 };
