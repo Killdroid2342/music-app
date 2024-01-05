@@ -44,7 +44,6 @@ const Social = () => {
       setAllUsers([]);
     }
   };
-
   const handleFollowingUser = async (selectedUser: Users) => {
     try {
       const isAlreadyFollowing = followingUsers.some(
@@ -52,18 +51,13 @@ const Social = () => {
       );
 
       if (!isAlreadyFollowing) {
-        // Use the callback form to work with the most up-to-date state
-        setFollowingUsers((prevFollowingUsers) => [
-          ...prevFollowingUsers,
-          selectedUser,
-        ]);
-
-        // Pass the updated state to the API call
+        const updatedFollowingUsers = [...followingUsers, selectedUser];
+        setFollowingUsers(updatedFollowingUsers);
+        console.log(updatedFollowingUsers, 'this is updated followers');
         const res = await instance.post('/user/followingUser', {
           username: clientUsername,
-          followingUsers: [...followingUsers, selectedUser], // Updated state
+          followingUsers: updatedFollowingUsers,
         });
-
         console.log(res, 'this is res');
       } else {
         console.log(`You are already following ${selectedUser.username}`);

@@ -4,7 +4,6 @@ import Home from './Pages/Home';
 import NotFound from './Pages/NotFound';
 import Social from './Pages/Social';
 import Following from './Pages/Following';
-import Profile from './Pages/Profile';
 
 const router = createBrowserRouter([
   {
@@ -23,10 +22,7 @@ const router = createBrowserRouter([
     path: '/following',
     element: <Following />,
   },
-  {
-    path: '/profile',
-    element: <Profile />,
-  },
+
   {
     path: '*',
     element: <NotFound />,
