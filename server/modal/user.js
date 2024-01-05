@@ -58,17 +58,21 @@ const searchUsers = async (username) => {
 };
 const usersFollowing = (username, user_followers) => {
   const conn = getDbConn();
-  console.log(
-    username,
-    user_followers,
-    'this is the username  and user_followers'
-  );
   conn.query(
-    'UPDATE musicplayer_users SET users_following = CONCAT(users_following, ?) WHERE username = ?',
-    [`,` + user_followers, username]
+    'UPDATE musicplayer_users SET users_following = ? WHERE username = ?',
+    [user_followers, username]
   );
 };
-
+const getFollowingUsers = async (username) => {
+  const conn = getDbConn();
+  const [rows, fields] = await conn
+    .promise()
+    .query('SELECT users_following FROM musicplayer_users WHERE username = ?', [
+      username,
+    ]);
+  conn.end();
+  return rows;
+};
 module.exports = {
   createUser,
   isUserExists,
@@ -77,4 +81,5 @@ module.exports = {
   deleteUser,
   searchUsers,
   usersFollowing,
+  getFollowingUsers,
 };
