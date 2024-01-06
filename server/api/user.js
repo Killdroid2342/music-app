@@ -10,7 +10,9 @@ const {
   comparePassswords,
   deleteUser,
   searchUsers,
-  usersFollowing,
+  getFollowingUsers,
+  checkIfFollowing,
+  FollowUser,
 } = require('../modal/user');
 
 const { jwtToken } = require('../modal/token');
@@ -76,15 +78,19 @@ router.post('/search', async (req, res) => {
   res.status(200).send(matchingItems);
 });
 
-router.post('/followingUser', async (req, res) => {
-  const { username, followingUsers } = req.body;
-
-  console.log(
-    username,
-    followingUsers,
-    'this is the username and followingUsers'
-  );
-  usersFollowing(username, followingUsers);
+router.post('/following-user', async (req, res) => {
+  const { username, target_user } = req.body;
+  if ((await checkIfFollowing(username, target_user)) == false) {
+    FollowUser(username, target_user);
+    //Res.send the correct form messages
+    console.log('started following');
+  } else {
+    //Res.send the correct form messages
+    console.log('already following');
+  }
 });
 
+router.get('/following-users', async (req, res) => {
+  console.log('hello');
+});
 module.exports = router;
