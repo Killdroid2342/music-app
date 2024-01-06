@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const { getDbConn } = require('../util');
+const { v4: uuidv4 } = require('uuid');
 
 require('dotenv').config();
 
@@ -56,13 +57,6 @@ const searchUsers = async (username) => {
   conn.end();
   return res;
 };
-const usersFollowing = (username, user_followers) => {
-  const conn = getDbConn();
-  conn.query(
-    'UPDATE musicplayer_users SET users_following = ? WHERE username = ?',
-    [user_followers, username]
-  );
-};
 const getFollowingUsers = async (username) => {
   const conn = getDbConn();
   const [rows, fields] = await conn
@@ -73,6 +67,36 @@ const getFollowingUsers = async (username) => {
   conn.end();
   return rows;
 };
+const checkIfFollowing = async (source_user, target_user) => {
+  try {
+    const conn = getDbConn();
+    const res = await conn
+      .promise()
+      .query(
+        'SELECT * FROM musicplayer_following WHERE source_account= ? AND target_account=?',
+        [source_user, target_user]
+      )
+      .then(([rows, fields]) => {
+        if (rows.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    conn.end();
+    return res;
+  } catch (e) {
+    return false;
+  }
+};
+const FollowUser = (source_user, target_user) => {
+  const conn = getDbConn();
+  const uniqueID = uuidv4();
+  conn.query(
+    'INSERT INTO musicplayer_following (ID,source_account, target_account) VALUES (?, ?,?)',
+    [uniqueID, source_user, target_user]
+  );
+};
 module.exports = {
   createUser,
   isUserExists,
@@ -80,6 +104,7 @@ module.exports = {
   comparePassswords,
   deleteUser,
   searchUsers,
-  usersFollowing,
   getFollowingUsers,
+  checkIfFollowing,
+  FollowUser,
 };
