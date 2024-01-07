@@ -10,7 +10,7 @@ const {
   comparePassswords,
   deleteUser,
   searchUsers,
-  getFollowingUsers,
+  FollowingUsers,
   checkIfFollowing,
   FollowUser,
 } = require('../modal/user');
@@ -90,7 +90,12 @@ router.post('/following-user', async (req, res) => {
   }
 });
 
-router.get('/following-users', async (req, res) => {
-  console.log('hello');
+router.get('/following-users/:user', async (req, res) => {
+  try {
+    const { user } = req.params;
+    res.send(FollowingUsers(user));
+  } catch (e) {
+    res.send([]);
+  }
 });
 module.exports = router;
