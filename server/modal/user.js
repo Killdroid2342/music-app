@@ -57,16 +57,7 @@ const searchUsers = async (username) => {
   conn.end();
   return res;
 };
-const getFollowingUsers = async (username) => {
-  const conn = getDbConn();
-  const [rows, fields] = await conn
-    .promise()
-    .query('SELECT users_following FROM musicplayer_users WHERE username = ?', [
-      username,
-    ]);
-  conn.end();
-  return rows;
-};
+
 const checkIfFollowing = async (source_user, target_user) => {
   try {
     const conn = getDbConn();
@@ -97,6 +88,17 @@ const FollowUser = (source_user, target_user) => {
     [uniqueID, source_user, target_user]
   );
 };
+const FollowingUsers = async (username) => {
+  const conn = getDbConn();
+  const [rows, fields] = await conn
+    .promise()
+    .query('SELECT * FROM musicplayer_following WHERE source_account = ?', [
+      username,
+    ]);
+  console.log(rows);
+  conn.end();
+  return rows;
+};
 module.exports = {
   createUser,
   isUserExists,
@@ -104,7 +106,7 @@ module.exports = {
   comparePassswords,
   deleteUser,
   searchUsers,
-  getFollowingUsers,
   checkIfFollowing,
   FollowUser,
+  FollowingUsers,
 };
