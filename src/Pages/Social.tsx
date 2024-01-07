@@ -13,8 +13,8 @@ const Social = () => {
   const [clientUsername, setClientUsername] = useState('');
   const [allUsers, setAllUsers] = useState<Users[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [followingUsers, setFollowingUsers] = useState<Users[]>([]);
-  console.log(followingUsers);
+
+  console.log(allUsers);
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
@@ -44,29 +44,18 @@ const Social = () => {
       setAllUsers([]);
     }
   };
-  const handleFollowingUser = async (selectedUser: Users) => {
+  const handleFollowUser = async (target_user: string) => {
+    console.log(`Following user: ${target_user}`);
     try {
-      const isAlreadyFollowing = followingUsers.some(
-        (user) => user.username === selectedUser.username
-      );
-
-      if (!isAlreadyFollowing) {
-        const updatedFollowingUsers = [...followingUsers, selectedUser];
-        setFollowingUsers(updatedFollowingUsers);
-        console.log(updatedFollowingUsers, 'this is updated followers');
-        const res = await instance.post('/user/followingUser', {
-          username: clientUsername,
-          followingUsers: updatedFollowingUsers,
-        });
-        console.log(res, 'this is res');
-      } else {
-        console.log(`You are already following ${selectedUser.username}`);
-      }
+      const res = await instance.post('/user/following-user', {
+        username: clientUsername,
+        target_user: target_user,
+      });
+      console.log(res);
     } catch (e) {
       console.log(e);
     }
   };
-
   return (
     <div className='min-h-screen flex flex-col'>
       <Nav clientUsername={clientUsername} />
@@ -94,8 +83,13 @@ const Social = () => {
                 <input
                   type='button'
                   className='text-center font-semibold text-neutral-900 border border-neutral-700 p-2 m-2 rounded-lg cursor-pointer'
-                  value='follow user'
-                  onClick={() => handleFollowingUser(item)}
+                  value='Follow User'
+                  onClick={() => handleFollowUser(item.username)}
+                />
+                <input
+                  type='button'
+                  className='text-center font-semibold text-neutral-900 border border-neutral-700 p-2 m-2 rounded-lg cursor-pointer'
+                  value='Unfollow User'
                 />
               </div>
             </div>
