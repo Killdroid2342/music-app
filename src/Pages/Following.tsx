@@ -12,9 +12,9 @@ const Following = () => {
   });
 
   const [clientUsername, setClientUsername] = useState('');
-  // const [lengthOfFollowers, setLengthOfFollowers] = useState(0);
-  const [following, setFollowing] = useState('');
-  console.log(following);
+  const [lengthOfFollowers, setLengthOfFollowers] = useState(0);
+  const [following, setFollowing] = useState([{}]);
+
   const usernameJWT = () => {
     const getJWT = Cookies.get('UserjwtToken');
     if (getJWT) {
@@ -28,10 +28,10 @@ const Following = () => {
 
   const FollowingUsers = async () => {
     try {
-      const res = await instance.get('/user/following-users');
-      console.log(res);
-      console.log(res.data);
+      const res = await instance.get(`/user/following-users/${clientUsername}`);
+
       setFollowing(res.data);
+      setLengthOfFollowers(following.length);
     } catch (error) {
       console.error('Error fetching following users', error);
     }
@@ -39,12 +39,11 @@ const Following = () => {
 
   useEffect(() => {
     usernameJWT();
-  });
-  useEffect(() => {
     if (clientUsername) {
       FollowingUsers();
     }
-  }, []);
+  }, [clientUsername]);
+
   return (
     <>
       <Nav clientUsername={clientUsername} />
@@ -52,16 +51,16 @@ const Following = () => {
         Here are the people you follow
       </h1>
       <p className='text-center text-2xl'>
-        {/* Accounts you follow: {lengthOfFollowers} */}
+        Accounts you follow: {lengthOfFollowers}
       </p>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8'>
-        {/* {userFollowing.map((userFollowing: any, key: any) => (
+        {following.map((following: any, key: any) => (
           <div key={key} className='bg-gray-200 p-4 rounded-md'>
             <p className='text-center text-lg font-semibold text-neutral-900 p-4'>
-              {userFollowing.username}
+              {following.target_account}
             </p>
           </div>
-        ))} */}
+        ))}
       </div>
     </>
   );
