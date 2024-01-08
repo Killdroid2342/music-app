@@ -14,7 +14,6 @@ const Social = () => {
   const [allUsers, setAllUsers] = useState<Users[]>([]);
   const [searchValue, setSearchValue] = useState('');
 
-  console.log(allUsers);
   const instance = axios.create({
     baseURL: VITE_API_URL,
   });
@@ -45,13 +44,11 @@ const Social = () => {
     }
   };
   const handleFollowUser = async (target_user: string) => {
-    console.log(`Following user: ${target_user}`);
     try {
       const res = await instance.post('/user/following-user', {
         username: clientUsername,
         target_user: target_user,
       });
-      console.log(res);
     } catch (e) {
       console.log(e);
     }

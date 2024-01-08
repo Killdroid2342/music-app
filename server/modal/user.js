@@ -25,7 +25,6 @@ const hashPassword = async (password, saltRounds) => {
 };
 const createUser = async (username, password, users_following) => {
   const conn = getDbConn();
-  console.log(username, password);
   conn.query(
     'INSERT INTO musicplayer_users (username, password, users_following) VALUES (?, ?, ?)',
     [username, password, users_following || '']
@@ -95,7 +94,7 @@ const FollowingUsers = async (username) => {
     .query('SELECT * FROM musicplayer_following WHERE source_account = ?', [
       username,
     ]);
-  console.log(rows);
+
   conn.end();
   return rows;
 };
