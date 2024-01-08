@@ -82,10 +82,7 @@ router.post('/following-user', async (req, res) => {
   const { username, target_user } = req.body;
   if ((await checkIfFollowing(username, target_user)) == false) {
     FollowUser(username, target_user);
-    //Res.send the correct form messages
-    console.log('started following');
   } else {
-    //Res.send the correct form messages
     console.log('already following');
   }
 });
@@ -93,7 +90,7 @@ router.post('/following-user', async (req, res) => {
 router.get('/following-users/:user', async (req, res) => {
   try {
     const { user } = req.params;
-    res.send(FollowingUsers(user));
+    res.send(await FollowingUsers(user));
   } catch (e) {
     res.send([]);
   }
