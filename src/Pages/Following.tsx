@@ -13,7 +13,7 @@ const Following = () => {
 
   const [clientUsername, setClientUsername] = useState('');
   const [lengthOfFollowers, setLengthOfFollowers] = useState(0);
-  const [following, setFollowing] = useState([{}]);
+  const [following, setFollowing] = useState([]);
 
   const usernameJWT = () => {
     const getJWT = Cookies.get('UserjwtToken');
@@ -31,7 +31,7 @@ const Following = () => {
       const res = await instance.get(`/user/following-users/${clientUsername}`);
 
       setFollowing(res.data);
-      setLengthOfFollowers(following.length);
+      setLengthOfFollowers(res.data.length);
     } catch (error) {
       console.error('Error fetching following users', error);
     }

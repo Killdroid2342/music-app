@@ -13,6 +13,7 @@ const {
   FollowingUsers,
   checkIfFollowing,
   FollowUser,
+  UnfollowUser,
 } = require('../modal/user');
 
 const { jwtToken } = require('../modal/token');
@@ -93,6 +94,20 @@ router.get('/following-users/:user', async (req, res) => {
     res.send(await FollowingUsers(user));
   } catch (e) {
     res.send([]);
+  }
+});
+router.post('/unfollow-user', async (req, res) => {
+  const { username, target_user } = req.body;
+  try {
+    await UnfollowUser(username, target_user);
+    res.send({
+      message: 'User unfollowed successfully',
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message: 'An error occurred while unfollowing the user',
+    });
   }
 });
 module.exports = router;
