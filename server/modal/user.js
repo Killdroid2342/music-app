@@ -98,6 +98,20 @@ const FollowingUsers = async (username) => {
   conn.end();
   return rows;
 };
+const UnfollowUser = async (source_user, target_user) => {
+  try {
+    const conn = getDbConn();
+    await conn
+      .promise()
+      .query(
+        'DELETE FROM musicplayer_following WHERE source_account = ? AND target_account = ?',
+        [source_user, target_user]
+      );
+    conn.end();
+  } catch (err) {
+    throw err;
+  }
+};
 module.exports = {
   createUser,
   isUserExists,
@@ -108,4 +122,5 @@ module.exports = {
   checkIfFollowing,
   FollowUser,
   FollowingUsers,
+  UnfollowUser,
 };
