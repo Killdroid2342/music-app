@@ -53,6 +53,17 @@ const Social = () => {
       console.log(e);
     }
   };
+
+  const HandleUnfollowUser = async (target_user: string) => {
+    try {
+      const res = await instance.post('/user/unfollow-user', {
+        username: clientUsername,
+        target_user: target_user,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div className='min-h-screen flex flex-col'>
       <Nav clientUsername={clientUsername} />
@@ -87,6 +98,7 @@ const Social = () => {
                   type='button'
                   className='text-center font-semibold text-neutral-900 border border-neutral-700 p-2 m-2 rounded-lg cursor-pointer'
                   value='Unfollow User'
+                  onClick={() => HandleUnfollowUser(item.username)}
                 />
               </div>
             </div>
